@@ -58,3 +58,14 @@ El output de la salida se encuentra en terraform_apply.out
 
 
 	2. Continuo el bootcamp creando una VM a Mano para cumplir con el tiempo.
+
+Los datos de la VM son los siguientes.
+
+```
+[root@sre-bootcamp-ga-20190805 ~]# ip a | grep global
+    inet 10.252.7.178/24 brd 10.252.7.255 scope global dynamic eth0
+[root@sre-bootcamp-ga-20190805 ~]# hostname
+sre-bootcamp-ga-20190805.semperti.local
+[root@sre-bootcamp-ga-20190805 ~]#
+```
+
