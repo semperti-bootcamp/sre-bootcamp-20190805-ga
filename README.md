@@ -46,5 +46,8 @@ que son seteadas en el archivo ./ansible/role/{{ nombre_rol }}/defaults/main.yml
 cd ./ansible/
 ansible-playbook install_app_pre_req.yml
 ```
+### 4. Output playbook
+![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a2-ansible/images/ansible-roles.png "ansible-roles")
 
-![alt tag](https://imgur.com/hINNOfy "ansible-roles")
+### 5. Check playbook 
+![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a2-ansible/images/ansible-check.png "ansible-check")
