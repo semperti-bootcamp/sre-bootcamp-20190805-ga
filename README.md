@@ -51,3 +51,6 @@ ansible-playbook install_app_pre_req.yml
 
 ### 5. Check playbook 
 ![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a2-ansible/images/ansible-check.png "ansible-check")
+
+### 6. Check conexion desde vpn
+![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a2-ansible/images/ansible-vpn-check.png "ansible-vpn-check")
