@@ -1,71 +1,50 @@
-# Week 01 - Assignments 1
-Crear VM con Terraform
+# Week 01 - Assignments 2
+Configurar VM con Ansible
 
 ##  Detalle
-	1.0. La VM no debe tener mas de 2 cores y 2 GB de RAM
-	1.1. La VM debe tener CentOS7
-	1.2. La VM debe ser accesible mediante VPN
-	1.3. La VM debe poder conectarse a internet
+
+	2.0 Deben configurarse todos los elementos solicitados [Java 8, Maven, MySQL, etc.]
+	2.1 Deben proveerse screenshots validando los paquetes instalados
+	2.2 Deben proveerse los scripts de configuración
+	2.3 Deben describirse todos los pasos y requerimientos para ejecutar el script de Ansible
 
 ## Pasos
 
-### 1. Instalo go y dep de go y compilo el provider de oVirt
-```
-Git: https://github.com/ovirt/terraform-provider-ovirt
-```
+### 1. Configurar ansible
 
-### 2. Instalo terraform en centos | macosx
-```
-wget https://releases.hashicorp.com/terraform/0.12.6/terraform_0.12.6_linux_amd64.zip
-unzip terraform_0.12.6_linux_amd64.zip -d /usr/bin/
-terraform -v
-```
-
-### 3. Copio binario de provider a directorio de plugins local de terraform probado en centos | macosx
+	1. Instalar ansible core en notebook
+	2. Creo usuario sin privilegios de conexion
+		- User: devops
+		- Pass: la empresa
+	3. Copiar ssh-key con ssh-copy-id  devops@sre-bootcamp-ga-20190805 (agregado en /etc/hosts)
+	4. Configurar ansible.cfg e inventory. 
+	5. Test con ansible app -m ping
 
 ```
-mkdir ~/.terraform.d/plugins
-cp $GOPATH/bin/terraform-provider-ovirt ~/.terraform.d/plugins
+$ ansible app -m ping
+sre-bootcamp-ga-20190805 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    },
+    "changed": false,
+    "ping": "pong"
+}
 ```
+	
+### 2. Instalacion de los pre requsitos
 
-### 4. Creo los script de terraform bajo el directorio terraform/sre-bootcamp-ga-201908
-```
-- main.tf
-- variables.tf
-- output.tf
-```
+Se crearon tres roles por cada componente a instalar. Cada rol tiene variables por default
+que son seteadas en el archivo ./ansible/role/{{ nombre_rol }}/defaults/main.yml
 
-### 5. Aplico los cambios con terraform apply ingresando user y pass
-```
-terraform apply
-```
+	- role: install_java -> 1.8.0
+	- role: install_maven -> 3.6.1
+	- role: install_mysql -> 5.6
 
-El output de la salida se encuentra en terraform_apply.out
-
-### 6. Inconvenientes.
-
-	1. Al ejecutar el provider lanza el siguiente error colocando las credenciales
-	de dominio. 
+### 3. Pasos para ejecutar el playbook.
 
 ```
-* ovirt_vm.my_vm_1: 1 error(s) occurred:
-
-* ovirt_vm.my_vm_1: Failed to parse non-array sso with response
+cd ./ansible/
+ansible-playbook install_app_pre_req.yml
 ```
 
-	- Probado con terrafor11 (centos) y terraform 12(macosx)
-	- Probado con usuarios de dominio y con usuario admin
-
-
-	2. Continuo el bootcamp creando una VM a Mano para cumplir con el tiempo.
-
-Los datos de la VM son los siguientes.
-
-```
-[root@sre-bootcamp-ga-20190805 ~]# ip a | grep global
-    inet 10.252.7.178/24 brd 10.252.7.255 scope global dynamic eth0
-[root@sre-bootcamp-ga-20190805 ~]# hostname
-sre-bootcamp-ga-20190805.semperti.local
-[root@sre-bootcamp-ga-20190805 ~]#
-```
-
+![alt tag](https://imgur.com/hINNOfy "ansible-roles")
