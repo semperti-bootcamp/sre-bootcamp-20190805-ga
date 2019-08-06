@@ -1,56 +1,88 @@
-# Week 01 - Assignments 2
-Configurar VM con Ansible
+# Week 01 - Assignments 3
+Correr aplicacion Java
 
-##  Detalle
-
-	2.0 Deben configurarse todos los elementos solicitados [Java 8, Maven, MySQL, etc.]
-	2.1 Deben proveerse screenshots validando los paquetes instalados
-	2.2 Deben proveerse los scripts de configuración
-	2.3 Deben describirse todos los pasos y requerimientos para ejecutar el script de Ansible
+	1. Configurar la conexión de la base de datos desde Code/src/main/resources/application.properties
+	2. Ubicate en la carpeta del código y ejecutá "mvn spring-boot:run".
+	3. Revisá la siguiente dirección http://localhost:8080
+	4. [Opcional] Por defecto, la aplicación almacena los PDFs en el directorio <User_home>/upload. Si querés cambiar este directorio, podés utilizar la propiedad -Dupload-dir=<path>.
+	5. [Opcional] Los PDFs predefinidos pueden encontrarse en la carpeta PDF. Si querés ver los PDFs, tenés que copiar los contenidos de esta carpeta a lo definido en el paso anterior.
 
 ## Pasos
 
-### 1. Configurar ansible
+### 1. Conectarse a CentOS 
 
-	1. Instalar ansible core en notebook
-	2. Creo usuario sin privilegios de conexion
-		- User: devops
-		- Pass: la empresa
-	3. Copiar ssh-key con ssh-copy-id  devops@sre-bootcamp-ga-20190805 (agregado en /etc/hosts)
-	4. Configurar ansible.cfg e inventory. 
-	5. Test con ansible app -m ping
+ Ip: 10.252.7.178
 
 ```
-$ ansible app -m ping
-sre-bootcamp-ga-20190805 | SUCCESS => {
-    "ansible_facts": {
-        "discovered_interpreter_python": "/usr/bin/python"
-    },
-    "changed": false,
-    "ping": "pong"
-}
+ssh root@10.252.7.178
 ```
-	
-### 2. Instalacion de los pre requsitos
 
-Se crearon tres roles por cada componente a instalar. Cada rol tiene variables por default
-que son seteadas en el archivo ./ansible/role/{{ nombre_rol }}/defaults/main.yml
-
-	- role: install_java -> 1.8.0
-	- role: install_maven -> 3.6.1
-	- role: install_mysql -> 5.6
-
-### 3. Pasos para ejecutar el playbook.
+### 2. Clono repo, testeo y creo .jar 
 
 ```
-cd ./ansible/
-ansible-playbook install_app_pre_req.yml
+git clone https://github.com/semperti-bootcamp/week01
+vim Code/src/main/resources/application.properties
+...
+spring.datasource.password=semperti
+...
+cd Code
+mvn spring-boot:run
+mvn clean package
 ```
-### 4. Output playbook
-![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a2-ansible/images/ansible-roles.png "ansible-roles")
 
-### 5. Check playbook 
-![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a2-ansible/images/ansible-check.png "ansible-check")
+![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a3-java/images/java-test.png "java-test")
 
-### 6. Check conexion desde vpn
-![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a2-ansible/images/ansible-vpn-check.png "ansible-vpn-check")
+### 4. Java Run Web
+
+```
+mkdir ~/upload
+cp -pvr /root/week1/PDFs/* /root/upload/
+java -jar target/journal-1.0.jar
+firewall-cmd --zone=public --add-port=8080/tcp --permanent
+firewall-cmd --reload
+curl http://localhost:8080
+```
+Pruebo desde mi notebook
+
+```
+$ curl http://10.252.7.178:8080
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Semperti - Journal System</title>
+    <script src="js/angular-min.js"></script>
+    <script src="js/app.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+</head>
+<body ng-app="JournalApp" ng-controller="CategoryController">
+<h2>Bienvenido al sistema de jornales de Semperti</h2>
+
+
+
+
+<div ng-controller="getCategories">
+    <table>
+        <thead>
+        <td>Categoría</td>
+        <td>Subscribirse</td>
+        </thead>
+        <tbody>
+
+        <tr ng-repeat="category in categories">
+            <td>{{category.name}}</td>
+            <td>
+                <a href="/login">Login</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
+```
+
+![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a3-java/images/java-run-web.png "java-web")
+
+![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a3-java/images/java-run-pdf.png "java-web-pdf")
+
