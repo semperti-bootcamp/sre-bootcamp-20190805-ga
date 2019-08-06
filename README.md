@@ -31,6 +31,8 @@ mvn clean package
 
 ### 4. Java Run Web
 
+Correr los siguientes comandos.
+
 ```
 mkdir ~/upload
 cp -pvr /root/week1/PDFs/* /root/upload/
@@ -81,5 +83,5 @@ $ curl http://10.252.7.178:8080
 
 ![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a3-java/images/java-run-web.png "java-web")
 
-![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a3-java/images/java-run-pdf.png "java-web-pdf")
+![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a3-java/images/java-run-web-pdf.png "java-web-pdf")
 
