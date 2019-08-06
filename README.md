@@ -1,88 +1,34 @@
-# Week 01 - Assignments 4
-Correr aplicacion Java
+# Week 01 - Assignments 5
+Dockerizar aplicacion Java
 
-	1. Se debe cargar en Nexus un snapshot de la aplicación Java 
-	2. Se debe cargar en Nexus un release de la aplicación Java 
-	3. Se deben realizar mediante un script de Ansible 
-	4. Se debe proveer todos los archivos necesarios para realizar estas tareas 
+1. Se debe proveer el Dockerfile y los archivos necesarios para generar la imagen
+2. Debe quedar corriendo el container
+3. Debe proveerse un link para probar el funcionamiento del contenedor
 
-## Pasos
+## Paso 1. Instalar docker y levantar servicio.
 
-### 1. Preparo pom.xml configurando los repo de Nexus
- 
-Edito pom.xml y agregar "repository" y "snapshotReposity"
-```
-...
-  <distributionManagement>  
-      <repository>  
-          <id>nexus-releases</id>  
-          <name>Nexus Release Repository</name>  
-          <url>http://10.252.7.162:8081/repository/maven-releases/</url>  
-      </repository>  
-      <snapshotRepository>  
-          <id>nexus-snapshots</id>  
-          <name>Nexus Snapshot Repository</name>  
-         <url>http://10.252.7.162:8081/repository/maven-snapshots/</url>
-      </snapshotRepository>  
-  </distributionManagement> 
-```		
-agrego dependecia
+yum -y install docker
+systemctl start docker
+docker version
+
+## Paso 2. Crear Dockerfile
+
+Creo Docker file en ./docker/journal3.3/Dockerfile y corro el siguiente comando.
+
+docker build --rm=true --no-cache --force-rm --tag journal:3.3
+
+Esto crea una imagen
 
 ```
-  <dependency>
-	  <groupId>org.apache.maven.plugins</groupId>
-	  <artifactId>maven-release-plugin</artifactId>
-	  <version>2.5.3</version>
-	  <type>maven-plugin</type>
-  </dependency>
-```
-agrego configuracion de las credenciales en setting.xml de maven para nexus 
-reemplazar USERNEXUS y PASSWORDNEXUS
-```
-   <server>
-        <id>nexus-snapshots</id>
-        <username>USERNEXUS</username>
-        <password>PASSWORDNEXUS</password>
-    </server>
-    <server>
-        <id>nexus-releases</id>
-        <username>USERNEXUS</username>
-        <password>PASSWORDNEXUS</password>
-    </server>
+#docker images | grep journal
+journal             3.3                 ba142ebe3ac7        About an hour ago   706 MB
 ```
 
+luego corremos la app dockerizada
 
-### 2. Creo snapshot de java y publico a Nexus tomo como ejemplo version 3.1
-
 ```
-mvn versions:set -DnewVersion=3.1-SNAPSHOT
-mvn clean deploy
-ls ./target/journals-3.1-SNAPSHOT.jar
-journals-3.1-SNAPSHOT.jar
-grep SNAPSHOT pom.xml
-    <version>3.1-SNAPSHOT</version> 
-```
-### 3. Creo nuevo release de java y publico a Nexus Ej, version 3.2
-```
-mvn versions:set -DnewVersion=3.2
-mvn clean deploy
-ls ./target/journals-3.2.jar
-journals-3.2.jar
-mvn versions:set -DnewVersion=3.2
-mvn clean deploy
+docker run --rm -p 8080:8080 --net=host --name=journal journal:3.3
 ```
 
-### 4. Hago nuevo deploy con script de ansible veriones 3.3 y 3.3 SNAPSHOT
-
-Para nuevo release 3.3
-```
-ansible-playbook maven-deploy.yml -e "new_version=3.3"
-```
-
-Para nuevo SNAPSHOT 3.3 
-```
-ansible-playbook maven-deploy.yml -e "new_version=3.3 snapshot=True"
-```
-
-![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a4-nexus/images/java-deploy-nexus-ansible.png "java-deploy-nexus-ansible")
+![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a5-docker/images/java-docker-run.png "java-docker-run.png")
 
