@@ -26,7 +26,7 @@ Edito pom.xml y agregar "repository" y "snapshotReposity"
       </snapshotRepository>  
   </distributionManagement> 
 ```		
-y agrego dependecia
+agrego dependecia
 
 ```
   <dependency>
@@ -36,6 +36,21 @@ y agrego dependecia
 	  <type>maven-plugin</type>
   </dependency>
 ```
+agrego configuracion de las credenciales en setting.xml de maven para nexus 
+reemplazar USERNEXUS y PASSWORDNEXUS
+```
+   <server>
+        <id>nexus-snapshots</id>
+        <username>USERNEXUS</username>
+        <password>PASSWORDNEXUS</password>
+    </server>
+    <server>
+        <id>nexus-releases</id>
+        <username>USERNEXUS</username>
+        <password>PASSWORDNEXUS</password>
+    </server>
+```
+
 
 ### 2. Creo snapshot de java y publico a Nexus tomo como ejemplo version 3.1
 
