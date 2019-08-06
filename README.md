@@ -21,10 +21,7 @@ ssh root@10.252.7.178
 
 ```
 git clone https://github.com/semperti-bootcamp/week01
-vim Code/src/main/resources/application.properties
-...
-spring.datasource.password=semperti
-...
+sed -i -e 's/spring.datasource.password=/&semperti/g' application.properties
 cd Code
 mvn spring-boot:run
 mvn clean package
