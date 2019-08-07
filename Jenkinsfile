@@ -12,12 +12,15 @@ pipeline {
     stages {
         stage('Configure') {
             steps {
-                sh "echo STAGE1"
+                sh "echo 'Pasos para la configuracionl'"
+		dir("${env.WORKSPACE}"){
+			sh "pwd"				
+		}
             }
         }
         stage('Unit Test') {
             steps {
-                sh "echo TEST1"
+                #sh "cd Code ; mvn test -f pom.xml"
             }
         }
         stage('Snapshot') {
