@@ -3,7 +3,7 @@ pipeline {
     agent {
         node (){
             label 'sre-bootcamp-ga-1'
-        } 
+        }
     }
     environment {
         ANSIBLE_HOST_KEY_CHECKING = 'false'
@@ -12,35 +12,30 @@ pipeline {
     stages {
         stage('Configure') {
             steps {
-                sh "echo 'Pasos para la configuracionl'"
-		dir("${env.WORKSPACE}"){
-			sh "pwd"				
-		}
+                sh "echo STAGE1"
             }
         }
         stage('Unit Test') {
             steps {
-                #sh "cd Code ; mvn test -f pom.xml"
+                sh "mvn test -f Code/pom.xml"
             }
         }
-        stage('Snapshot') {
+        stage('Release & Upload Nexus') {
             steps {
-                sh "echo SNAPSHOT"
+                sh "mvn versions:set -DnewVersion=4.0.2 -f Code/pom.xml"
+                sh "mvn clean deploy -f Code/pom.xml -DskipTests" 
             }
         }
-        stage('Release') {
+        stage('Snapshot & Upload Nexus') {
             steps {
-                sh "echo RELEASE"
+                sh "mvn versions:set -DnewVersion=4.0.2-SNAPSHOT -f Code/pom.xml"
+                sh "mvn clean deploy -f Code/pom.xml -DskipTests" 
             }
         }
-        stage('Upload Artifact to Nexus') {
+        stage('Docker build & tag images') {
             steps {
-                sh "echo NEXUS"
-            }
-        }
-        stage('Docker images') {
-            steps {
-                sh "echo DOCKER"
+                sh "sudo docker build --rm=true --no-cache --force-rm --tag journal:4.0.2 ."
+                sh "sudo docker tag journal:4.0.2 gonzaloacosta/journal:4.0.2"
             }
         }
     }
