@@ -18,6 +18,17 @@ La imagen del container creada con el pipeline para la version 4.0.3.
 
 ![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a7-jenkins/images/jenkins2.png "jenkins2.png")
 
+Prueba de que luego del commit con la nueva version el pipeline realizo el pool correctamente y construyo la imagen.
+
+![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a7-jenkins/images/jenkins3.png "jenkins3.png")
+
+```
+[devops@sre-bootcamp-ga-20190805 ga-bc-pipeline]$ sudo docker images | grep 4.0
+gonzaloacosta/journal             4.0.4               8ff37932fb45        2 minutes ago       156 MB
+journal                           4.0.4               8ff37932fb45        2 minutes ago       156 MB
+gonzaloacosta/journal             4.0.3               6b98cf410f66        12 minutes ago      156 MB
+journal                           4.0.3               6b98cf410f66        12 minutes ago      156 MB 
+```
 
 ## Pasos proximos
 
