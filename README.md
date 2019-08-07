@@ -15,22 +15,22 @@ docker version
 
 ## Paso 2. Crear Dockerfile con network namespace default
 
-Creo Docker file en ./docker/journal3.3/Dockerfile y corro el siguiente comando.
+Creo Docker file en ./docker/journal4.0/Dockerfile y corro el siguiente comando.
 
-docker build --rm=true --no-cache --force-rm --tag journal:3.3
+docker build --rm=true --no-cache --force-rm --tag journal:4.0
 
 Esto crea una imagen
 
 ```
 #docker images | grep journal
-journal             3.3                 ba142ebe3ac7        About an hour ago   706 MB
+journal             4.0                 ba142ebe3ac7        About an hour ago   706 MB
 ```
 
 Si definimos jdbc=localhost:3306 la app va a levantar solo si mapeamos el network namespace al default (host), pero esto no permite
 levantar el container en otro host. 
 
 ```
-docker run --rm -p 8080:8080 --net=host --name=journal journal:3.3
+docker run --rm -p 8080:8080 --net=host --name=journal journal:4.0
 ```
 
 ![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a5-docker/images/java-docker-run.png "java-docker-run.png")
@@ -44,7 +44,7 @@ Para que corra en caulquier otro host y se conecte a la misma base debemos hacer
 	   para la base.
 
 ```
-docker run --rm -d -p 8080:8080 journal:3.3-SNAPSHOT
+docker run --rm -d -p 8080:8080 journal:4.0-SNAPSHOT
 ```
 
 ![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a5-docker/images/java-docker-run-mysql-change.png "java-docker-run-mysql.png")
