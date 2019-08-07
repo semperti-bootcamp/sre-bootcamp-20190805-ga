@@ -49,7 +49,11 @@ CONTAINER ID        IMAGE                       COMMAND                  CREATED
 [root@jenkinsmaster ~]#
 ```
 
-Tendriamos que probar de exponer los dos puertos o a lo sumo re-crear el repo solo para docker como dice la nota
+Tendriamos que probar :
+	
+	1. Cambiar el network namespace a --net=host para el container de nexus (netns sobre le final).
+	1. Exponer los dos puertos sin cambiar el netns
+	2. Re-crear el repo solo para docker como dice la nota en caso de que 1. no funcione
 
 ## 2. Docker Hub
 
@@ -66,3 +70,9 @@ docker ps -a
 ```
 
 ![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a6-docker-images/images/java-docker-push-rmi-pull.png "java-docker-push-rmi-pull.png")
+
+## 3. Detalle de los netns para los contenedores docker
+
+![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a6-docker-images/images/netns1.png "netns1")
+
+![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a6-docker-images/images/netns2.png "netns2")
