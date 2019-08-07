@@ -10,17 +10,34 @@ pipeline {
     }
 
     stages {
-        stage('Prepare Jenkins Slave') {
+        stage('Configure') {
             steps {
                 sh "echo STAGE1"
-                //sh "rm -rf *"
-                //sh "git clone https://github.com/semperti-bootcamp/sre-bootcamp-ga-20190805.git -b w1a7-jenkins"
-                sh "pwd ; ls -ltr"
             }
         }
-        stage('Unit Test & Package') {
+        stage('Unit Test') {
             steps {
                 sh "echo TEST1"
+            }
+        }
+        stage('Snapshot') {
+            steps {
+                sh "echo SNAPSHOT"
+            }
+        }
+        stage('Release') {
+            steps {
+                sh "echo RELEASE"
+            }
+        }
+        stage('Upload Artifact to Nexus') {
+            steps {
+                sh "echo NEXUS"
+            }
+        }
+        stage('Docker images') {
+            steps {
+                sh "echo DOCKER"
             }
         }
     }
