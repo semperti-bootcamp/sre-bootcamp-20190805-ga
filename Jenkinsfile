@@ -1,7 +1,4 @@
 pipeline {
-    options {
-        ansiColor('xterm')
-    }   
 
     agent {
         node (){
@@ -15,37 +12,15 @@ pipeline {
     stages {
         stage('Prepare Jenkins Slave') {
             steps {
-                sh "echo Stage1"
+                sh "echo STAGE1"
+                //sh "rm -rf *"
+                //sh "git clone https://github.com/semperti-bootcamp/sre-bootcamp-ga-20190805.git -b w1a7-jenkins"
+                sh "pwd ; ls -ltr"
             }
         }
         stage('Unit Test & Package') {
             steps {
-		sh "echo Stage2"
-                }
-            }
-        }
-        stage('Clean & Generate Snapshot') {
-            steps {
-		sh "echo Stage3"
-                }
-            }
-        }
-        stage('Release & Deploy Image to Nexus'){
-            steps{
-		sh "echo Stage4"
-                }
-            }
-        }
-        stage('Configure Docker Image on Docker Host') {
-            steps {
-		sh "sudo docker images"
-                }
-            }
-        }
-        stage('Publish Image to DTR') {
-            steps {
-		sh "echo DockerPull"
-                }
+                sh "echo TEST1"
             }
         }
     }
