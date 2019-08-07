@@ -42,7 +42,7 @@ Para que corra en caulquier otro host y se conecte a la misma base debemos hacer
 	   para la base.
 
 ```
-docker run --rm -p 8080:8080 --name=journal journal:3.3
+docker run --rm -d -p 8080:8080 journal:3.3-SNAPSHOT
 ```
 
 ![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a5-docker/images/java-docker-run-mysql-change.png "java-docker-run-mysql.png")
