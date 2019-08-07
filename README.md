@@ -73,6 +73,6 @@ docker ps -a
 
 ## 3. Detalle de los netns para los contenedores docker
 
-![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a6-docker-images/images/netns1.png "netns1")
+![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a6-docker-images/images/netns1.png "netns1.png")
 
-![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a6-docker-images/images/netns2.png "netns2")
+![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a6-docker-images/images/netns2.png "netns2.png")
