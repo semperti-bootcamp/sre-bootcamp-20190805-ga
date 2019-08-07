@@ -13,3 +13,12 @@ Estan los archivos de configuración en el repo. No encontré la manera de confi
 lo que probé hacer es configurar el parametro Pool SCM cada 5 min (*/5 * * * *)
 
 ![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a7-jenkins/images/jenkins.png "jenkins.png")
+
+La imagen del container creada con el pipeline para la version 4.0.3.
+
+![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a7-jenkins/images/jenkins2.png "jenkins2.png")
+
+
+## Pasos proximos
+
+Queda mejorar el manejo de varariables y credenciales.
