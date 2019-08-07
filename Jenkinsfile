@@ -22,20 +22,20 @@ pipeline {
         }
         stage('Release & Upload Nexus') {
             steps {
-                sh "mvn versions:set -DnewVersion=4.0.3 -f Code/pom.xml"
+                sh "mvn versions:set -DnewVersion=4.0.4 -f Code/pom.xml"
                 sh "mvn clean deploy -f Code/pom.xml -DskipTests" 
             }
         }
         stage('Snapshot & Upload Nexus') {
             steps {
-                sh "mvn versions:set -DnewVersion=4.0.3-SNAPSHOT -f Code/pom.xml"
+                sh "mvn versions:set -DnewVersion=4.0.4-SNAPSHOT -f Code/pom.xml"
                 sh "mvn clean deploy -f Code/pom.xml -DskipTests" 
             }
         }
         stage('Docker build & tag images') {
             steps {
-                sh "sudo docker build --rm=true --no-cache --force-rm --tag journal:4.0.3 ."
-                sh "sudo docker tag journal:4.0.3 gonzaloacosta/journal:4.0.3"
+                sh "sudo docker build --rm=true --no-cache --force-rm --tag journal:4.0.4 ."
+                sh "sudo docker tag journal:4.0.4 gonzaloacosta/journal:4.0.4"
             }
         }
     }
