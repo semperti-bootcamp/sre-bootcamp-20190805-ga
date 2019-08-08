@@ -9,9 +9,7 @@ pipeline {
     }
     environment {
         ANSIBLE_HOST_KEY_CHECKING = 'false'
-	VERSION = "4.0.9"
-	APP_NAME='journal'
-	DOCKER_REPO='gonzaloacosta/journal'
+	VERSION = "4.0.10"
     }
 
     stages {
@@ -19,7 +17,6 @@ pipeline {
             steps {
                 sh "echo STAGE1 - Tasks pre Test and build"
 		sh "echo -n 'Version : ' ; echo $env.VERSION"
-		sh "sed -i -e 's/VERSION/$VERSION/g' Dockerfile"
 		sh "sudo yum -y install wget nc ansible"
             }
         }
@@ -46,7 +43,7 @@ pipeline {
             steps {
 		withCredentials([usernamePassword(credentialsId: 'ga-docker-hub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {	
 			dir("${env.WORKSPACE}/ansible"){
-				sh "ansible-playbook stage5-docker-build.yml --extra-vars @vars/ansible-vars.json -e USERNAME=$USERNAME -e PASSWORD=$PASSWORD"
+				sh "ansible-playbook stage5-docker-build.yml --extra-vars @vars/ansible-vars.json -e VERSION=$env.VERSION -e USERNAME=$USERNAME -e PASSWORD=$PASSWORD"
 			}
 		} 
             }
@@ -55,7 +52,7 @@ pipeline {
             steps {
 		dir("${env.WORKSPACE}/ansible"){
 			sh "pwd"
-                	sh "ansible-playbook --extra-vars @vars/ansible-vars.json stage6-docker-run.yml"
+                	sh "ansible-playbook --extra-vars @vars/ansible-vars.json stage6-docker-run.yml -e VERSION=$env.VERSION"
 		}
 		timeout(300) {
 		    waitUntil {
