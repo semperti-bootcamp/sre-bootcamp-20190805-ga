@@ -8,7 +8,17 @@ GitOps
 
 ## Pasos
 
-![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a9-gitops/images/gitops1.png "gitops1.png")
+Utilizare esta rama como la rama master del Assigment 9. Los archivos son los que definen debajo.
 
-```
-```
+	master -> w1a9-gitops
+		- minifest.json
+		- Jenkinsfile
+
+	staging -> w1a9-gitops-staging
+		- manifest.json
+		- staging-env.json
+
+	prod -> w1a9-gitops-prod
+		- manifest.json
+		- prod-env.json
+
