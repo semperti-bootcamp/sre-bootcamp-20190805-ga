@@ -1,0 +1,7 @@
+{
+    "version": "4.1",
+    "description": "Manifest para aplicacion Journals", 
+    "artifacts": {
+        "app": "journals-4.1.jar"
+    }
+}

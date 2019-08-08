@@ -1,0 +1,32 @@
+---
+- name: GitOps Deploy App
+  hosts: localhost
+  become: true
+
+  tasks:
+
+    - name: Stop old container
+      docker_container:
+        name: "{{ environment.app.name }}"
+        state: stopped
+      ignore_errors: yes
+
+    - name: Remove old image
+      docker_container:
+        name: "{{ environment.app.name }}"
+        state: absent
+      ignore_errors: yes
+
+    - name: Create new container
+      docker_container:
+        name: "{{ environment.app.name }}"
+        image: "{{ manifest.app.repo }}:{{ manifest.app.version }}"
+        state: present
+        recreate: yes
+        ports:
+          - "{{ environment.app.port }}:8080"
+
+    - name: Start new container
+      docker_container:
+        name: "{{ environment.app.name }}"
+        state: started
