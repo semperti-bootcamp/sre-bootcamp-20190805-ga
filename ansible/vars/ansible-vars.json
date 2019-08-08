@@ -1,5 +1,5 @@
 {
-  "VERSION": "4.0.9",
+  "VERSION": "4.0.10",
   "APP_NAME": "journal",
   "APP_NAME_LATEST": "journal_latest",
   "DOCKER_REPO": "gonzaloacosta/journal"
