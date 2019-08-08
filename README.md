@@ -1,4 +1,4 @@
-# Week 01 - Assignments 7 
+# Week 01 - Assigments 7 
 
 Crear Pipeline de CI
 

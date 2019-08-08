@@ -7,12 +7,14 @@ pipeline {
     }
     environment {
         ANSIBLE_HOST_KEY_CHECKING = 'false'
+	VERSION = "4.0.5"
     }
 
     stages {
         stage('Configure') {
             steps {
-                sh "echo STAGE1"
+                sh "echo STAGE1 - Tasks pre Test"
+		sh "echo -n "Version : " ; echo $env.VERSION "
             }
         }
         stage('Unit Test') {
@@ -22,20 +24,24 @@ pipeline {
         }
         stage('Release & Upload Nexus') {
             steps {
-                sh "mvn versions:set -DnewVersion=4.0.4 -f Code/pom.xml"
+                sh "mvn versions:set -DnewVersion=$env.VERSION -f Code/pom.xml"
                 sh "mvn clean deploy -f Code/pom.xml -DskipTests" 
             }
         }
         stage('Snapshot & Upload Nexus') {
             steps {
-                sh "mvn versions:set -DnewVersion=4.0.4-SNAPSHOT -f Code/pom.xml"
+                sh "mvn versions:set -DnewVersion=$env.VERSION-SNAPSHOT -f Code/pom.xml"
                 sh "mvn clean deploy -f Code/pom.xml -DskipTests" 
             }
         }
         stage('Docker build & tag images') {
             steps {
-                sh "sudo docker build --rm=true --no-cache --force-rm --tag journal:4.0.4 ."
-                sh "sudo docker tag journal:4.0.4 gonzaloacosta/journal:4.0.4"
+		withCredentials([file(credentialsId: 'ga-docker-hub', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+			sh "sudo docker build --rm=true --no-cache --force-rm --tag journal:$env.VERSION ."
+			sh "sudo docker tag journal:$env.VERSION $USER/journal:$env.VERSION"
+			sh "sudo docker login -u $USER -p $PASS docker.io"
+			sh "sudo docker push $USER/journal:$env.VERSION"
+		} 
             }
         }
     }
