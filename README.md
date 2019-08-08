@@ -8,8 +8,14 @@ Crear Pipeline de CD
 
 ## Pasos
 
-Estan los archivos de configuración en el repo. No encontré la manera de configurar lo webhook Jenkins sin estar expuesto a internet, 
-lo que probé hacer es configurar el parametro Pool SCM cada 5 min (*/5 * * * *)
+Para promover una nueva version debemos modificar la versión desde el Jenkisfiles en el apartado environment.
+
+```
+    environment {
+        ANSIBLE_HOST_KEY_CHECKING = 'false'
+        VERSION = "4.0.10"
+    }
+```
 
 ![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a8-jenkins-cd/images/jenkins-cd1.png "jenkins-cd1.png")
 
