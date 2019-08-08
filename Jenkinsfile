@@ -45,15 +45,9 @@ pipeline {
         stage('Stage 5 - Docker build, tag & push images ') {
             steps {
 		withCredentials([usernamePassword(credentialsId: 'ga-docker-hub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {	
-			sh "sudo docker build --rm=true --no-cache --force-rm --tag $env.APP_NAME:$env.VERSION ."
-			sh "sudo docker tag $env.APP_NAME:$env.VERSION $env.APP_NAME:latest" 
-			sh "sudo docker tag $env.APP_NAME:$env.VERSION $env.DOCKER_REPO:$env.VERSION"
-			sh "sudo docker tag $env.APP_NAME:$env.VERSION $env.DOCKER_REPO:latest"
-			sh "sudo docker login -u $USERNAME -p $PASSWORD docker.io"
-			sh "sudo docker push $env.DOCKER_REPO:$env.VERSION"
-			sh "sudo docker push $env.DOCKER_REPO:latest"
-			sh "sudo docker images"
-			sh "sudo docker logout"
+			dir("${env.WORKSPACE}/ansible"){
+				sh "ansible-playbook stage5-docker-build.yml --extra-vars @vars/ansible-vars.json -e USERNAME=$USERNAME -e PASSWORD=$PASSWORD"
+			}
 		} 
             }
 	}
