@@ -9,38 +9,40 @@ pipeline {
     }
     environment {
         ANSIBLE_HOST_KEY_CHECKING = 'false'
-	VERSION = "4.0.7"
+	VERSION = "4.0.8"
 	APP_NAME='journal'
 	DOCKER_REPO='gonzaloacosta/journal'
     }
 
     stages {
-        stage('Configure & Clean Slave') {
+        stage('Stage 1 - Configure & Clean Slave') {
             steps {
                 sh "echo STAGE1 - Tasks pre Test and build"
 		sh "echo -n 'Version : ' ; echo $env.VERSION"
 		sh "sed -i -e 's/VERSION/$VERSION/g' Dockerfile"
-		sh "yum -y install wget nc"
+		sh "yum -y install wget nc ansible"
             }
         }
-        stage('Unit Test') {
+
+        stage('Stage 2 - Unit Test') {
             steps {
                 sh "mvn test -f Code/pom.xml"
             }
         }
-        stage('Release & Upload Nexus') {
+
+        stage('Stage 3 - Release & Upload Nexus') {
             steps {
                 sh "mvn versions:set -DnewVersion=$env.VERSION -f Code/pom.xml"
                 sh "mvn clean deploy -f Code/pom.xml -DskipTests" 
             }
         }
-        stage('Snapshot & Upload Nexus') {
+        stage('Stage 4 - Snapshot & Upload Nexus') {
             steps {
                 sh "mvn versions:set -DnewVersion=$env.VERSION-SNAPSHOT -f Code/pom.xml"
                 sh "mvn clean deploy -f Code/pom.xml -DskipTests" 
             }
         }
-        stage('Docker build, tag & push images ') {
+        stage('Stage 5 - Docker build, tag & push images ') {
             steps {
 		withCredentials([usernamePassword(credentialsId: 'ga-docker-hub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {	
 			sh "sudo docker build --rm=true --no-cache --force-rm --tag $env.APP_NAME:$env.VERSION ."
@@ -55,12 +57,12 @@ pipeline {
 		} 
             }
 	}
-        stage('Docker pull & run') {
+        stage('Stage 6 - Docker pull & run') {
             steps {
-		sh "sudo docker stop `sudo docker ps -a | grep $env.APP_NAME | awk '{ print $1 }'`"
-		sh "sudo docker rmi `sudo docker images -a | grep $env.APP_NAME | awk '{ print $3 }'`"
-		sh "sudo docker run --rm -d -p 8080:8080 $env.DOCKER_REPO:latest"
-		sh "sudo docker ps -a"
+		dir("${env.WORKSPACE}/ansible"){
+			sh "pwd"
+                	sh "ansible-playbook --extra-vars @ansible-vars.json stage6-docker-run.yml"
+		}
 		timeout(300) {
 		    waitUntil {
 		       script {
@@ -71,7 +73,7 @@ pipeline {
 		} 
             }
         }
-        stage('Check Application RUN') {
+        stage('Stage 7 - Check Application RUN') {
             steps {
 		sh "curl http://localhost:8080"
             }
