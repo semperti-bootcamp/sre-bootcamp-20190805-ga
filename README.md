@@ -1,35 +1,30 @@
-# Week 01 - Assigments 7 
+# Week 01 - Assigments 8 
 
-Crear Pipeline de CI
+Crear Pipeline de CD
 
-	7.0	Debe encontrarse dentro de un folder con el nombre bc-username
-	7.1	Debe ejecutarse el build cada vez que se realice un PR
-	7.2	Debe contener al menos, las etapas de configuración, unit testing, snapshot, release, upload a Nexus del artefacto de Maven y de la imagen de Docker
-	7.3	Debe ejecutarse en un Jenkins slave propio
+	8.0	Debe encontrarse dentro de un folder con el nombre bc-username
+	8.1	Debe ejecutarse el build cada vez que se realice un PR
+	8.2	Debe contener al menos las etapas de descarga de imagen, ejecución de contenedor y prueba de acceso a la aplicación mediante un curl y su output
 
-## Paso 1
+## Pasos
 
 Estan los archivos de configuración en el repo. No encontré la manera de configurar lo webhook Jenkins sin estar expuesto a internet, 
 lo que probé hacer es configurar el parametro Pool SCM cada 5 min (*/5 * * * *)
 
-![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a7-jenkins/images/jenkins.png "jenkins.png")
+![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a8-jenkins-cd/images/jenkins-cd1.png "jenkins-cd1.png")
 
 La imagen del container creada con el pipeline para la version 4.0.3.
 
-![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a7-jenkins/images/jenkins2.png "jenkins2.png")
+![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a8-jenkins-cd/images/jenkins-cd2.png "jenkins-cd2.png")
 
-Prueba de que luego del commit con la nueva version el pipeline realizo el pool correctamente y construyo la imagen.
-
-![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a7-jenkins/images/jenkins3.png "jenkins3.png")
+Chequeamos que quede corriendo, en el log de jenkins esta el curl.
 
 ```
-[devops@sre-bootcamp-ga-20190805 ga-bc-pipeline]$ sudo docker images | grep 4.0
-gonzaloacosta/journal             4.0.4               8ff37932fb45        2 minutes ago       156 MB
-journal                           4.0.4               8ff37932fb45        2 minutes ago       156 MB
-gonzaloacosta/journal             4.0.3               6b98cf410f66        12 minutes ago      156 MB
-journal                           4.0.3               6b98cf410f66        12 minutes ago      156 MB 
+[devops@sre-bootcamp-ga-20190805 ansible]$ sudo docker images | grep 4.0.10
+gonzaloacosta/journal   4.0.10              c9860d2486b4        About a minute ago   156 MB
+journal                 4.0.10              c9860d2486b4        About a minute ago   156 MB
+[devops@sre-bootcamp-ga-20190805 ansible]$ sudo docker ps -a
+CONTAINER ID        IMAGE                          COMMAND                  CREATED              STATUS              PORTS                    NAMES
+afc9d9ff0fae        gonzaloacosta/journal:latest   "java -jar /opt/jo..."   About a minute ago   Up About a minute   0.0.0.0:8080->8080/tcp   journal_latest
+[devops@sre-bootcamp-ga-20190805 ansible]$
 ```
-
-## Pasos proximos
-
-Queda mejorar el manejo de varariables y credenciales.
