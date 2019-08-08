@@ -1,3 +1,5 @@
+#!groovy
+
 pipeline {
 
     agent {
@@ -14,7 +16,7 @@ pipeline {
         stage('Configure') {
             steps {
                 sh "echo STAGE1 - Tasks pre Test"
-		sh "echo -n "Version : " ; echo $env.VERSION "
+		sh "echo -n 'Version : ' ; echo $env.VERSION"
             }
         }
         stage('Unit Test') {
