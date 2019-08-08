@@ -9,7 +9,7 @@ pipeline {
     }
     environment {
         ANSIBLE_HOST_KEY_CHECKING = 'false'
-	VERSION = "4.0.6"
+	VERSION = "4.0.7"
     }
 
     stages {
@@ -41,7 +41,7 @@ pipeline {
             steps {
 		withCredentials([usernamePassword(credentialsId: 'ga-docker-hub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {	
 			sh "sudo docker build --rm=true --no-cache --force-rm --tag journal:$env.VERSION ."
-			sh "sudo docker tag journal:$env.VERSION $USER/journal:$env.VERSION"
+			sh "sudo docker tag journal:$env.VERSION $USERNAME/journal:$env.VERSION"
 			sh "sudo docker login -u $USERNAME -p $PASSWORD docker.io"
 			sh "sudo docker push $USERNAME/journal:$env.VERSION"
 		} 
