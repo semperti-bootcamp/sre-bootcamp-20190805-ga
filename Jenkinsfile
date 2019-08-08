@@ -58,13 +58,9 @@ pipeline {
         stage('Docker pull & run') {
             steps {
 		sh "sudo docker stop $(sudo docker ps -a | grep $env.APP_NAME | awk '{ print $1 }')"
-		sh "sudo docker rmi $(sudo docker images -a | grep $env.APP_NAMR | awk '{ print $3 })"
+		sh "sudo docker rmi $(sudo docker images -a | grep $env.APP_NAME | awk '{ print $3 })"
 		sh "sudo docker run --rm -d -p 8080:8080 $env.DOCKER_REPO:latest
 		sh "sudo docker ps -a"
-            }
-        }
-        stage('Check Application RUN') {
-            steps {
 		timeout(300) {
 		    waitUntil {
 		       script {
@@ -72,8 +68,12 @@ pipeline {
 			 return (r == 0);
 		       }
 		    }
+		} 
+            }
+        }
+        stage('Check Application RUN') {
+            steps {
 		sh "curl http://localhost:8080"
-		}
             }
         }
     }
