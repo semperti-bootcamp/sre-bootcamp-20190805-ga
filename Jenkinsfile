@@ -44,7 +44,7 @@ pipeline {
             steps {
 		withCredentials([usernamePassword(credentialsId: 'ga-docker-hub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {	
 			sh "sudo docker build --rm=true --no-cache --force-rm --tag $env.APP_NAME:$env.VERSION ."
-			sh "sudo docker tag $env.APP_NAME:$env.VERSION $env.APP_NAME:latest 
+			sh "sudo docker tag $env.APP_NAME:$env.VERSION $env.APP_NAME:latest" 
 			sh "sudo docker tag $env.APP_NAME:$env.VERSION $env.DOCKER_REPO:$env.VERSION"
 			sh "sudo docker tag $env.APP_NAME:$env.VERSION $env.DOCKER_REPO:latest"
 			sh "sudo docker login -u $USERNAME -p $PASSWORD docker.io"
@@ -59,7 +59,7 @@ pipeline {
             steps {
 		sh "sudo docker stop $(sudo docker ps -a | grep $env.APP_NAME | awk '{ print $1 }')"
 		sh "sudo docker rmi $(sudo docker images -a | grep $env.APP_NAME | awk '{ print $3 })"
-		sh "sudo docker run --rm -d -p 8080:8080 $env.DOCKER_REPO:latest
+		sh "sudo docker run --rm -d -p 8080:8080 $env.DOCKER_REPO:latest"
 		sh "sudo docker ps -a"
 		timeout(300) {
 		    waitUntil {
