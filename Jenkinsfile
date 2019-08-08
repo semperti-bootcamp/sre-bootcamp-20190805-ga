@@ -20,7 +20,7 @@ pipeline {
                 sh "echo STAGE1 - Tasks pre Test and build"
 		sh "echo -n 'Version : ' ; echo $env.VERSION"
 		sh "sed -i -e 's/VERSION/$VERSION/g' Dockerfile"
-		sh "yum -y install wget nc ansible"
+		sh "sudo yum -y install wget nc ansible"
             }
         }
 
