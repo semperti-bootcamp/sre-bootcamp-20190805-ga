@@ -9,7 +9,7 @@ pipeline {
     }
     environment {
         ANSIBLE_HOST_KEY_CHECKING = 'false'
-	VERSION = "4.0.8"
+	VERSION = "4.0.9"
 	APP_NAME='journal'
 	DOCKER_REPO='gonzaloacosta/journal'
     }
