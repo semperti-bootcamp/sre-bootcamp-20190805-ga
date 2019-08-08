@@ -9,14 +9,15 @@ pipeline {
     }
     environment {
         ANSIBLE_HOST_KEY_CHECKING = 'false'
-	VERSION = "4.0.5"
+	VERSION = "4.0.6"
     }
 
     stages {
         stage('Configure') {
             steps {
-                sh "echo STAGE1 - Tasks pre Test"
+                sh "echo STAGE1 - Tasks pre Test and build"
 		sh "echo -n 'Version : ' ; echo $env.VERSION"
+		sh "sed -i -e 's/VERSION/$VERSION/g' Dockerfile"
             }
         }
         stage('Unit Test') {
