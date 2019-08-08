@@ -38,11 +38,11 @@ pipeline {
         }
         stage('Docker build & tag images') {
             steps {
-		withCredentials([file(credentialsId: 'ga-docker-hub', password: 'PASS', username: 'USER')]) {
+		withCredentials([usernamePassword(credentialsId: 'ga-docker-hub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {	
 			sh "sudo docker build --rm=true --no-cache --force-rm --tag journal:$env.VERSION ."
 			sh "sudo docker tag journal:$env.VERSION $USER/journal:$env.VERSION"
-			sh "sudo docker login -u $USER -p $PASS docker.io"
-			sh "sudo docker push $USER/journal:$env.VERSION"
+			sh "sudo docker login -u $USERNAME -p $PASSWORD docker.io"
+			sh "sudo docker push $USERNAME/journal:$env.VERSION"
 		} 
             }
         }
