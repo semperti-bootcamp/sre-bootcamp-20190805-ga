@@ -15,7 +15,9 @@ pipeline {
 
         stage('Deploy to Staging') {
 	    when { 
-		branch 'origin/w1a9-gitops-staging'
+	    expression {
+		return env.BRANCH_NAME != 'w1a9-gitops-prod';
+		}
 	    } 
             steps {
 		script {
@@ -32,6 +34,29 @@ pipeline {
 
         stage('Deploy to Production') {
 	    when { 
+	    expression {
+		return env.BRANCH_NAME == 'w1a9-gitops-prod';
+		}
+	    } 
+            steps {
+		script {
+            	   manifest = readJSON file: 'manifest.json'
+                   environment = readJSON file: 'staging-env.json'
+		   echo "Deploying the manifest ${manifest.version} for ${manifest.artifacts.web} to Staging"
+		   echo "URL: ${environment.app.healthcheck_url}"
+		}
+		dir("${env.WORKSPACE}/ansible"){
+                	sh "ansible-playbook gitops-deploy-app.yml -e appname=${environment.app.name} -e repo=${environment.repo} -e appport=${environment.app.port} -e version=${manifest.version}"
+		}
+            }
+        }
+
+        stage('Deploy to Production') {
+	    when { 
+		branch 'origin/w1a9-gitops-prod'
+	    } 
+            steps {
+		script {
 		branch 'origin/w1a9-gitops-prod'
 	    } 
             steps {
