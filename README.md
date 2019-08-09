@@ -37,6 +37,10 @@ Programamos el poll desde este lugar cada 5 min o el intervalo que se desee.
 
 ![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a9-gitops-prod/images/gitops2.png "gitops2.png")
 
+![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a9-gitops-prod/images/gitops3.png "gitops3.png")
+
+![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a9-gitops-prod/images/gitops4.png "gitops4.png")
+
 ## Observaciones
 
 ### Temas en los que debo profundizar.
