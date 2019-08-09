@@ -3,6 +3,6 @@
     "description": "Manifest para aplicacion Journals", 
     "repo": "gonzaloacosta/journal",
     "artifacts": {
-        "app": "journals-4.0.1.jar"
+        "app": "journals-4.0.10.jar"
     }
 }
