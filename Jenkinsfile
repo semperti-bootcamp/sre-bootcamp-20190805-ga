@@ -16,7 +16,7 @@ pipeline {
         stage('Deploy to Staging') {
 	    when { 
 	    expression {
-		return env.BRANCH_NAME != 'w1a9-gitops-prod';
+		return env.BRANCH_NAME == 'orgin/w1a9-gitops-stagin';
 		}
 	    } 
             steps {
@@ -34,7 +34,7 @@ pipeline {
 
         stage('Deploy to Production') {
 	    when { 
-		branch 'w1a9-gitops-prod'
+		branch 'origin/w1a9-gitops-prod'
 	    } 
             steps {
 		script {
