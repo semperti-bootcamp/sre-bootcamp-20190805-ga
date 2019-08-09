@@ -12,10 +12,10 @@ pipeline {
     }
 
     stages {
-
         stage('Deploy to Staging') {
             steps {
 		sh "echo ${env.BRANCH_NAME}"
+		sh 'git branch'
 		script {
             	   manifest = readJSON file: 'manifest.json'
                    environment = readJSON file: 'staging-env.json'
@@ -23,13 +23,14 @@ pipeline {
 		   echo "URL: ${environment.app.healthcheck_url}"
 		}
 		dir("${env.WORKSPACE}/ansible"){
-                	sh "ansible-playbook gitops-deploy-app.yml -e appname=${environment.app.name} -e repo=${environment.repo} -e appport=${environment.app.port} -e version=${manifest.version}"
+                	sh "ansible-playbook gitops-deploy-app.yml -e appname=${environment.app.name} -e repo=${manifest.repo} -e appport=${environment.app.port} -e version=${manifest.version}"
 		}
             }
         }
 
         stage('Deploy to Production') {
             steps {
+		sh 'git branch'
 		script {
             	   manifest = readJSON file: 'manifest.json'
                    environment = readJSON file: 'prod-env.json'
