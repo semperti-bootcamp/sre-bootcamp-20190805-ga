@@ -10,9 +10,6 @@ pipeline {
             label 'sre-bootcamp-ga-1'
         }
     }
-    environment {
-        ANSIBLE_HOST_KEY_CHECKING = 'false'
-    }
 
     stages {
 
