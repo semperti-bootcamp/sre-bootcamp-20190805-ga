@@ -15,7 +15,7 @@ pipeline {
 
         stage('Deploy to Staging') {
 	    when { 
-		branch 'w1a9-gitops-staging'
+		branch 'origin/w1a9-gitops-staging'
 	    } 
             steps {
 		script {
@@ -32,7 +32,7 @@ pipeline {
 
         stage('Deploy to Production') {
 	    when { 
-		branch 'w1a9-gitops-prod'
+		branch 'origin/w1a9-gitops-prod'
 	    } 
             steps {
 		script {
