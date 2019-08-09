@@ -29,9 +29,6 @@ pipeline {
         }
 
         stage('Deploy to Production') {
-	    when { 
-		branch 'prod'
-	    } 
             steps {
 		script {
             	   manifest = readJSON file: 'manifest.json'
