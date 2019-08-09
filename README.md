@@ -33,3 +33,14 @@ En la imagen se puede ver que el pipeline solamente corrio para el stage de Stag
 Como solamente contaba con un solo slave, lo que hice fué el deploy de los dos ambientes hacerlo en puertos separados pero con el mismo release de imagen de docker,
 esto es para staging escucho en el puerto 8081 y para prod en el 8080
 
+## Observaciones
+
+### Próximos pasos a mejorar
+
+	1. El codigo no es bueno, se nota lo poco developer, hay que mejorar en este aspecto.
+	2. Reforzar conceptos de desarrollo con lenguajes de uso general como java, este punto lo debo reforzar.
+	3. Se debe mejorar la confección de pipelines y codigo groovy.
+	4. El que llego leyendo hasta acá, se gano una pinta a mi cuenta y 33% de mi almuerzo diario.
+# FIN!
+![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a9-gitops-prod/images/Guinness.jpg "Guinness.jpg")
+
