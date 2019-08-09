@@ -14,12 +14,8 @@ pipeline {
     stages {
 
         stage('Deploy to Staging') {
-	    when { 
-	    expression {
-		return env.BRANCH_NAME == 'orgin/w1a9-gitops-stagin';
-		}
-	    } 
             steps {
+		sh "echo ${env.BRANCH_NAME}"
 		script {
             	   manifest = readJSON file: 'manifest.json'
                    environment = readJSON file: 'staging-env.json'
@@ -34,7 +30,7 @@ pipeline {
 
         stage('Deploy to Production') {
 	    when { 
-		branch 'origin/w1a9-gitops-prod'
+		branch 'prod'
 	    } 
             steps {
 		script {
