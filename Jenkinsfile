@@ -28,7 +28,7 @@ pipeline {
 		   echo "URL: ${environment.app.healthcheck_url}"
 		}
 		dir("${env.WORKSPACE}/ansible"){
-                	sh "ansible-playbook gitops-deploy-app.yml --extra-vars=${ manifest } --extra-vars=${ environment }" 
+                	sh "ansible-playbook gitops-deploy-app.yml -e appname=${environment.app.name} -e repo=${environment.repo} -e appport=${environment.app.port} -e version=${manifest.version}"
 		}
             }
         }
@@ -45,7 +45,7 @@ pipeline {
 		   echo "URL: ${environment.app.healthcheck_url}"
 		}
 		dir("${env.WORKSPACE}/ansible"){
-                	sh "ansible-playbook gitops-deploy-app.yml --extra-vars=${ manifest } --extra-vars=${ environment }" 
+                	sh "ansible-playbook gitops-deploy-app.yml -e appname=${environment.app.name} -e repo=${environment.repo} -e appport=${environment.app.port} -e version=${manifest.version}"
 		}
             }
     	}

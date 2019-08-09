@@ -7,26 +7,26 @@
 
     - name: Stop old container
       docker_container:
-        name: "{{ environment.app.name }}"
+        name: "{{ appname }}"
         state: stopped
       ignore_errors: yes
 
     - name: Remove old image
       docker_container:
-        name: "{{ environment.app.name }}"
+        name: "{{ appname }}"
         state: absent
       ignore_errors: yes
 
     - name: Create new container
       docker_container:
-        name: "{{ environment.app.name }}"
-        image: "{{ manifest.app.repo }}:{{ manifest.app.version }}"
+        name: "{{ appname }}"
+        image: "{{ repo }}:{{ version }}"
         state: present
         recreate: yes
         ports:
-          - "{{ environment.app.port }}:8080"
+          - "{{ appport }}:8080"
 
     - name: Start new container
       docker_container:
-        name: "{{ environment.app.name }}"
+        name: "{{ appname }}"
         state: started
