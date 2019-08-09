@@ -13,6 +13,9 @@ pipeline {
 
     stages {
         stage('Deploy to Staging') {
+	    when{ 
+		branch 'w1a9-gitops-staging'
+	    }
             steps {
 		sh "echo ${env.BRANCH_NAME}"
 		sh 'git branch'
@@ -29,6 +32,9 @@ pipeline {
         }
 
         stage('Deploy to Production') {
+	    when{ 
+		branch 'w1a9-gitops-prod'
+	    }
             steps {
 		sh 'git branch'
 		script {
