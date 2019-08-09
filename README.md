@@ -1,4 +1,4 @@
-# Week 01 - Assigments 9 
+# Week 01 - Assigments 9 - Stage
 
 GitOps
 
@@ -17,8 +17,12 @@ Utilizare esta rama como la rama master del Assigment 9. Los archivos son los qu
 	staging -> w1a9-gitops-staging
 		- manifest.json
 		- staging-env.json
+			- App Name: journal_staging
+			- Port: 8081
 
 	prod -> w1a9-gitops-prod
 		- manifest.json
 		- prod-env.json
+			- App Name: journal_latest
+			- Port: 8080
 
