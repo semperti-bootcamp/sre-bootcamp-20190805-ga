@@ -29,3 +29,5 @@ Utilizare esta rama como la rama master del Assigment 9. Los archivos son los qu
 Test de la corrida de multibranch
 
 ![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a9-gitops-prod/images/gitops1.png "gitops1.png")
+
+![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a9-gitops-prod/images/gitops2.png "gitops2.png")
