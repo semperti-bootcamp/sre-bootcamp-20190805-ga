@@ -35,12 +35,15 @@ esto es para staging escucho en el puerto 8081 y para prod en el 8080
 
 ## Observaciones
 
-### Próximos pasos a mejorar
+### Temas en los que debo profundizar.
 
-	1. El codigo no es bueno, se nota lo poco developer, hay que mejorar en este aspecto.
-	2. Reforzar conceptos de desarrollo con lenguajes de uso general como java, este punto lo debo reforzar.
-	3. Se debe mejorar la confección de pipelines y codigo groovy.
-	4. El que llego leyendo hasta acá, se gano una pinta a mi cuenta y 33% de mi almuerzo diario.
-# FIN!
+	1. Código!. El código no es bueno y es feo. Debo profundizar el desarrollo con leguaje de uso general como java.
+	2. Pipelines!. Reforzar el desarrollo de código en groovy.
+	3. Terraform!. Profundizar y ejercitar desarrollo de script de terraform con providers como aws, vmware, azure. 
+	4. Cerveza!. Si llegó hasta acá leyendo se ganó una pinta a cuenta mia, reclamar via mail a gonzalo.acosta@semperti.com. 
+
+	   NOTA: No comparta el punto 4 con sus companeros, el premio es solo para aquellos que hayan leído hasta el final.
+
+# Salud FIN!
 ![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a9-gitops-prod/images/Guinness.jpg "Guinness.jpg")
 
