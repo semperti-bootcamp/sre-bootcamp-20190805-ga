@@ -15,7 +15,7 @@ pipeline {
 
         stage('Deploy to Staging') {
 	    when { 
-		branch "*stag*"
+		branch "w1a9-gitops-staging"
 	    } 
             steps {
 		script {
@@ -25,14 +25,14 @@ pipeline {
 		   echo "URL: ${environment.app.healthcheck_url}"
 		}
 		dir("${env.WORKSPACE}/ansible"){
-                	sh "ansible-playbook gitops-deploy-app.yml -e appname=${environment.app.name} -e repo=${environment.repo} -e appport=${environment.app.port} -e version=${manifest.version}"
+                	sh "ansible-playbook gitops-deploy-app.yml -e appname=${environment.app.name} -e repo=${manifest.repo} -e appport=${environment.app.port} -e version=${manifest.version}"
 		}
             }
         }
 
         stage('Deploy to Production') {
 	    when { 
-		branch "*prod*"
+		branch "w1a9-gitops-prod"
 	    } 
             steps {
 		script {
@@ -42,7 +42,7 @@ pipeline {
 		   echo "URL: ${environment.app.healthcheck_url}"
 		}
 		dir("${env.WORKSPACE}/ansible"){
-                	sh "ansible-playbook gitops-deploy-app.yml -e appname=${environment.app.name} -e repo=${environment.repo} -e appport=${environment.app.port} -e version=${manifest.version}"
+                	sh "ansible-playbook gitops-deploy-app.yml -e appname=${environment.app.name} -e repo=${manifest.repo} -e appport=${environment.app.port} -e version=${manifest.version}"
 		}
             }
     	}
