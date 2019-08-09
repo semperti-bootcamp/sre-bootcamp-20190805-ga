@@ -33,6 +33,10 @@ En la imagen se puede ver que el pipeline solamente corrio para el stage de Stag
 Como solamente contaba con un solo slave, lo que hice fué el deploy de los dos ambientes hacerlo en puertos separados pero con el mismo release de imagen de docker,
 esto es para staging escucho en el puerto 8081 y para prod en el 8080
 
+Programamos el poll desde este lugar cada 5 min o el intervalo que se desee.
+
+![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a9-gitops-prod/images/gitops2.png "gitops2.png")
+
 ## Observaciones
 
 ### Temas en los que debo profundizar.
