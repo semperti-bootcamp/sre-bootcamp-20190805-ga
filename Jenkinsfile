@@ -32,15 +32,15 @@ pipeline {
 		   echo "MANIFEST_STAGE_VERSION_MAJOR: ----> ${manifest.stage.version.major}"
 		   echo "MANIFEST_STAGE_VERSION_MINOR: ----> ${manifest.stage.version.minor}"
 
-		   //if ( $env.DEPLOY_STAGE_VERSION_MAJOR == $manifest.stage.version.major ) {  
-		//	echo "Deploy same major version in STAGE ${manifest.stage.version.major} v${manifest.stage.version.minor}"
+		   if ( $env.DEPLOY_STAGE_VERSION_MAJOR == $manifest.stage.version.major ) {  
+			echo "Deploy same major version in STAGE ${manifest.stage.version.major}.${manifest.stage.version.minor}"
+		   }
 		 //   } else {
 		//	echo "Deploy different major version in STAGE ${manifest.stage.version.major} v${manifest.stage.version.minor}"
 		 //  }  
-		}
 		//dir("${env.WORKSPACE}/ansible"){
                 	//sh "ansible-playbook gitops-deploy-app.yml -e appname=${environment.app.name} -e repo=${manifest.repo} -e appport=${environment.app.port} -e version=${manifest.version}"
-		//}
+		}
             }
         }
         stage('Deploy to Production') {
