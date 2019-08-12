@@ -1,4 +1,4 @@
-#!groovy
+	#!groovy
 
 def manifest
 
@@ -26,16 +26,16 @@ pipeline {
 		   echo "Deploying the manifest ${manifest.stage.version.major}.${manifest.stage.version.minor} for ${manifest.stage.app_name} to Staging"
 		   echo "URL: ${manifest.stage.app.healthcheck_url}"
 
-		   echo "DEPLOY_STAGE_VERSION: ----> $env.DEPLOY_STAGE_VERSION"
-		   echo "DEPLOY_STAGE_VERSION_MAJOR: ----> $env.DEPLOY_STAGE_VERSION_MAJOR"
-		   echo "DEPLOY_STAGE_VERSION_MINOR: ----> $env.DEPLOY_STAGE_VERSION_MINOR"
-		   echo "MANIFEST_STAGE_VERSION_MAJOR: ----> $manifest.stage.version.major"
-		   echo "MANIFEST_STAGE_VERSION_MINOR: ----> $manifest.stage.version.minor"
+		   echo "DEPLOY_STAGE_VERSION: ----> ${env.DEPLOY_STAGE_VERSION}"
+		   echo "DEPLOY_STAGE_VERSION_MAJOR: ----> ${env.DEPLOY_STAGE_VERSION_MAJOR}"
+		   echo "DEPLOY_STAGE_VERSION_MINOR: ----> ${env.DEPLOY_STAGE_VERSION_MINOR}"
+		   echo "MANIFEST_STAGE_VERSION_MAJOR: ----> ${manifest.stage.version.major}"
+		   echo "MANIFEST_STAGE_VERSION_MINOR: ----> ${manifest.stage.version.minor}"
 
 		   if ( $env.DEPLOY_STAGE_VERSION_MAJOR == $manifest.stage.version.major ) {  
-			echo "Deploy same major version in STAGE $manifest.stage.version.major v$$manifest.stage.version.minor"
+			echo "Deploy same major version in STAGE ${manifest.stage.version.major} v${manifest.stage.version.minor}"
 		    } else {
-			echo "Deploy different major version in STAGE $manifest.stage.version.major v$$manifest.stage.version.minor"
+			echo "Deploy different major version in STAGE ${manifest.stage.version.major} v${manifest.stage.version.minor}"
 		   }  
 		}
 		//dir("${env.WORKSPACE}/ansible"){
@@ -57,11 +57,11 @@ pipeline {
 		   echo "Deploying the manifest ${manifest.prod.version.major}.${manifest.prod.version.minor} for ${manifest.prod.app_name} to Production"
 		   echo "URL: ${manifest.prod.app.healthcheck_url}"
 
-		   echo "DEPLOY_PROD_VERSION: ----> $env.DEPLOY_PROD_VERSION"
-		   echo "DEPLOY_PROD_VERSION_MAJOR: ----> $env.DEPLOY_PROD_VERSION_MAJOR"
-		   echo "DEPLOY_PROD_VERSION_MINOR: ----> $env.DEPLOY_PROD_VERSION_MINOR"
-		   echo "MANIFEST_PROD_VERSION_MAJOR: ----> $manifest.prod.version.major"
-		   echo "MANIFEST_PROD_VERSION_MINOR: ----> $manifest.prod.version.minor"
+		   echo "DEPLOY_PROD_VERSION: ----> ${env.DEPLOY_PROD_VERSION}"
+		   echo "DEPLOY_PROD_VERSION_MAJOR: ----> ${env.DEPLOY_PROD_VERSION_MAJOR}"
+		   echo "DEPLOY_PROD_VERSION_MINOR: ----> ${env.DEPLOY_PROD_VERSION_MINOR}"
+		   echo "MANIFEST_PROD_VERSION_MAJOR: ----> ${manifest.prod.version.major}"
+		   echo "MANIFEST_PROD_VERSION_MINOR: ----> ${manifest.prod.version.minor}"
 
 		   if ( $env.DEPLOY_PROD_VERSION_MAJOR == $manifest.prod.version.major ) {
 			echo "Desploy same version en PROD 
