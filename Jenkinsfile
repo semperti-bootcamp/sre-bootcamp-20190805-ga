@@ -64,7 +64,7 @@ pipeline {
 		   echo "MANIFEST_PROD_VERSION_MINOR: ----> ${manifest.prod.version.minor}"
 
 		   if ( $env.DEPLOY_PROD_VERSION_MAJOR == $manifest.prod.version.major ) {
-			echo "Desploy same version en PROD 
+			echo "Desploy same version en PROD "
  	           }
 		 
 		}
