@@ -1,8 +1,40 @@
 {
-    "version": "4.1",
-    "description": "Manifest para aplicacion Journals", 
-    "repo": "gonzaloacosta/journal",
-    "artifacts": {
-        "app": "journals-4.1.jar"
+  "stage": {
+    "version": 4.1,
+    "docker_repo": "gonzaloacosta/journal",
+    "app": {
+      "ip": "10.252.7.178",
+      "port": "8081",
+      "healthcheck_url": "http://10.252.7.178:8081",
+      "name": "journal_staging",
+      "artifacts": [
+        {
+          "app": "journals-4.1.jar"
+        }
+      ]
+    },
+    "db": {
+      "ip": "10.252.7.178",
+      "port": "3306"
     }
+  },
+  "prod": {
+    "version": "4.0.9",
+    "docker_repo": "gonzaloacosta/journal",
+    "app": {
+      "ip": "10.252.7.178",
+      "port": "8080",
+      "healthcheck_url": "http://10.252.7.178:8080",
+      "name": "journal_latest",
+      "artifacts": [
+        {
+          "app": "journals-4.0.9.jar"
+        }
+      ]
+    },
+    "db": {
+      "ip": "10.252.7.178",
+      "port": "3306"
+    }
+  }
 }
