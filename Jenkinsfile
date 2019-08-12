@@ -45,7 +45,7 @@ pipeline {
 
 		   //#if(env.DEPLOY_STAGE_VERSION_MAJOR == manifest.stage.version.major) {  
 		//	echo "Deploy same major version in STAGE ${manifest.stage.version.major}.${manifest.stage.version.minor}"
-		   }
+		   //}
 		 //   } else {
 		//	echo "Deploy different major version in STAGE ${manifest.stage.version.major} v${manifest.stage.version.minor}"
 		 //  }  
