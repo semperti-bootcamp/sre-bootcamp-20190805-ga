@@ -19,7 +19,7 @@ pipeline {
             steps {
 		script {
             	   manifest = readJSON file: 'manifest.json'
-		   env.DEPLOY_VERSION_STAGE = sh(returnStdout: true, script: "docker ps -a | grep journal_staging | awk '{ print $2 }' | cut -d: -f2").trim()
+		   env.DEPLOY_VERSION_STAGE = sh(returnStdout: true, script: "docker ps -a | grep journal_staging | awk '{ print \$2 }' | cut -d: -f2").trim()
 		   env.DEPLOY_MAJOR_VERSION = sh(returnStdout: true, script: "echo '${env.DEPLOY_VERSION_STAGE}' | awk -F'[ .]' '{print \$1}'").trim()
 		   echo "Deploying the manifest ${manifest.stage.version} for ${manifest.stage.app_name} to Staging"
 		   echo "URL: ${manifest.stage.app.healthcheck_url}"
@@ -37,7 +37,7 @@ pipeline {
             steps {
 		script {
             	   manifest = readJSON file: 'manifest.json'
-		   env.DEPLOY_VERSION_PROD = sh(returnStdout: true, script: "docker ps -a | grep journal_latest | awk '{ print $2 }' | cut -d: -f2").trim()
+		   env.DEPLOY_VERSION_PROD = sh(returnStdout: true, script: "docker ps -a | grep journal_latest | awk '{ print \$2 }' | cut -d: -f2").trim()
 		   echo "Deploying the manifest ${manifest.prod.version} for ${manifest.prod.app_name} to Production"
 		   echo "URL: ${manifest.prod.app.healthcheck_url}"
 		   sh "echo $env.DEPLOY_VERSION_PROD"
