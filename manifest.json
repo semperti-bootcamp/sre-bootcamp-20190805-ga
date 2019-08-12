@@ -25,7 +25,7 @@
   "prod": {
     "version": {
       "major": 4,
-      "minor": 2
+      "minor": 1
     },
     "docker_repo": "gonzaloacosta/journal",
     "app_name": "journals",

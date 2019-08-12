@@ -28,8 +28,6 @@ pipeline {
 		   env.DEPLOY_PROD_VERSION_MAJOR = sh(returnStdout: true, script: "echo '${env.DEPLOY_PROD_VERSION}' | awk -F'[ .]' '{print \$1}'").trim()
 		   env.DEPLOY_PROD_VERSION_MINOR = sh(returnStdout: true, script: "echo '${env.DEPLOY_PROD_VERSION}' | awk -F'[ .]' '{print \$2}'").trim()
 
-		   env.MANIFEST_PROD_VERSION_MINOR = ${manifest.prod.version.minor}
-
 		   echo "Deploying the manifest ${manifest.stage.version.major}.${manifest.stage.version.minor} for ${manifest.stage.app_name} to Staging"
 		   echo "URL: ${manifest.stage.app.healthcheck_url}"
 
@@ -59,7 +57,7 @@ pipeline {
         stage('Deploy to Production') {
 	    when { 
 	//	branch "w1a9-gitops-final"
-		expression { env.MANIFEST_PROD_VERSION_MINOR > env.DEPLOY_PROD_VERSION_MINOR } 
+		expression { env.MANIFEST_PROD_VERSION_MINOR == manifest.prod.version.minor } 
 	    } 
             steps {
 		script {
