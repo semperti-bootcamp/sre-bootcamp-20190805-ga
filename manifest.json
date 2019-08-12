@@ -1,7 +1,11 @@
 {
   "stage": {
-    "version": 4.1,
+    "version": {
+      "major": 4,
+      "minor": 2
+    },
     "docker_repo": "gonzaloacosta/journal",
+    "app_name": "journals",
     "app": {
       "ip": "10.252.7.178",
       "port": "8081",
@@ -19,8 +23,12 @@
     }
   },
   "prod": {
-    "version": "4.0.9",
+    "version": {
+      "major": 4,
+      "minor": 1
+    },
     "docker_repo": "gonzaloacosta/journal",
+    "app_name": "journals",
     "app": {
       "ip": "10.252.7.178",
       "port": "8080",
