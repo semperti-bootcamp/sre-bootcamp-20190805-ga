@@ -43,12 +43,12 @@ pipeline {
 		//}
             }
         }
-        stage('Deploy to Production') {
+        //stage('Deploy to Production') {
 	    //when { 
 	//	branch "w1a9-gitops-final"
 	    //} 
-            steps {
-		script {
+        //    steps {
+//		script {
             	   //manifest = readJSON file: 'manifest.json'
 		   //env.DEPLOY_PROD_VERSION = sh(returnStdout: true, script: "sudo docker ps -a | grep journal_latest | awk '{ print \$2 }' | cut -d: -f2").trim()
 		   //env.DEPLOY_PROD_VERSION_MAJOR = sh(returnStdout: true, script: "echo '${env.DEPLOY_PROD_VERSION}' | awk -F'[ .]' '{print \$1}'").trim()
@@ -60,18 +60,18 @@ pipeline {
 		   //echo "DEPLOY_PROD_VERSION: ----> ${env.DEPLOY_PROD_VERSION}"
 		   //echo "DEPLOY_PROD_VERSION_MAJOR: ----> ${env.DEPLOY_PROD_VERSION_MAJOR}"
 		   //echo "DEPLOY_PROD_VERSION_MINOR: ----> ${env.DEPLOY_PROD_VERSION_MINOR}"
-		   echo "MANIFEST_PROD_VERSION_MAJOR: ----> ${manifest.prod.version.major}"
-		   echo "MANIFEST_PROD_VERSION_MINOR: ----> ${manifest.prod.version.minor}"
+//		   echo "MANIFEST_PROD_VERSION_MAJOR: ----> ${manifest.prod.version.major}"
+//		   echo "MANIFEST_PROD_VERSION_MINOR: ----> ${manifest.prod.version.minor}"
 
 		   //if ( $env.DEPLOY_PROD_VERSION_MAJOR == $manifest.prod.version.major ) {
 		//	echo "Desploy same version en PROD"
  	         //  }
 		 
-		}
+//		}
 		//dir("${env.WORKSPACE}/ansible"){
                 	//sh "ansible-playbook gitops-deploy-app.yml -e appname=${environment.app.name} -e repo=${manifest.repo} -e appport=${environment.app.port} -e version=${manifest.version}"
 		//}
-            }
-    	}
+            //}
+    	//}
     }
 }
