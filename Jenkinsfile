@@ -1,6 +1,6 @@
 #!groovy
 
-def manifest
+def man
 
 pipeline {
 
@@ -15,26 +15,26 @@ pipeline {
         stage('Determine Version') {
             steps {
 		script {
-            	   manifest = readJSON file: 'manifest.json'
-		   // STAGE
+            	   man = readJSON file: 'man.json'
+		   // Stage versions
 		   env.DEPLOY_STAGE_VERSION = sh(returnStdout: true, script: "sudo docker ps -a | grep journal_staging | awk '{ print \$2 }' | cut -d: -f2").trim()
 		   env.DEPLOY_STAGE_VERSION_MAJOR = sh(returnStdout: true, script: "echo '${env.DEPLOY_STAGE_VERSION}' | awk -F'[ .]' '{print \$1}'").trim()
 		   env.DEPLOY_STAGE_VERSION_MINOR = sh(returnStdout: true, script: "echo '${env.DEPLOY_STAGE_VERSION}' | awk -F'[ .]' '{print \$2}'").trim()
 
-		   // PROD
+		   // Prod versions
 		   env.DEPLOY_PROD_VERSION = sh(returnStdout: true, script: "sudo docker ps -a | grep journal_latest | awk '{ print \$2 }' | cut -d: -f2").trim()
 		   env.DEPLOY_PROD_VERSION_MAJOR = sh(returnStdout: true, script: "echo '${env.DEPLOY_PROD_VERSION}' | awk -F'[ .]' '{print \$1}'").trim()
 		   env.DEPLOY_PROD_VERSION_MINOR = sh(returnStdout: true, script: "echo '${env.DEPLOY_PROD_VERSION}' | awk -F'[ .]' '{print \$2}'").trim()
 
 		   // Print Versions 
-		   echo "Stage deployed: ${env.DEPLOY_STAGE_VERSION} --> Stage to deploy: ${manifest.stage.version.major}.${manifest.stage.version.minor}"
-		   echo "Prod deployed: ${env.DEPLOY_PROD_VERSION} --> Prod to deploy: ${manifest.prod.version.major}.${manifest.prod.version.minor}"
+		   echo "Stage deployed: ${env.DEPLOY_STAGE_VERSION} --> Stage to deploy: ${man.stage.version.major}.${man.stage.version.minor}"
+		   echo "Prod deployed: ${env.DEPLOY_PROD_VERSION} --> Prod to deploy: ${man.prod.version.major}.${man.prod.version.minor}"
 
-		   // Deploy stage if stage version deployed NOT EQUAL stage version in manifest.json
-		   env.DEPLOY_STAGE = sh(returnStdout: true, script: "[ '${env.DEPLOY_STAGE_VERSION_MINOR}' -ne '${manifest.stage.version.minor}' ] && echo 'YES'").trim()
+		   // Deploy stage if stage version deployed NOT EQUAL stage version in man.json
+		   env.DEPLOY_STAGE = sh(returnStdout: true, script: "[ '${env.DEPLOY_STAGE_VERSION_MINOR}' -ne '${man.stage.version.minor}' ] && echo 'YES'").trim()
 		
-		   // Deploy prod if stage version deployed LESS THAN OR EQUAL stage in manifest.json
-		   env.DEPLOY_PROD = sh(returnStdout: true, script: "[ '${manifest.prod.version.minor}' -le '${manifest.stage.version.minor}' ] && echo 'YES'").trim()
+		   // Deploy prod if stage version deployed LESS THAN OR EQUAL stage in man.json
+		   env.DEPLOY_PROD = sh(returnStdout: true, script: "[ '${man.prod.version.minor}' -le '${man.stage.version.minor}' ] && echo 'YES'").trim()
 
 		}  
             }
@@ -44,11 +44,10 @@ pipeline {
 		environment name: "DEPLOY_STAGE", value: "YES"
 	    } 
             steps {
-		script {
-			echo "Deploy STAGE VERSION: ${manifest.stage.version.major}.${manifest.stage.version.minor}"
-		//dir("${env.WORKSPACE}/ansible"){
-                	//sh "ansible-playbook gitops-deploy-app.yml -e appname=${environment.app.name} -e repo=${manifest.repo} -e appport=${environment.app.port} -e version=${manifest.version}"
-		}
+		sh "echo 'Deploy STAGE VERSION: ${man.stage.version.major}.${man.stage.version.minor}'"
+		dir("${env.WORKSPACE}/ansible"){
+                	sh "ansible-playbook gitops-deploy-app.yml -e appname=${man.stage.app.name} -e repo=${man.stage.docker_repo} -e appport=${man.stage.app.port} -e version=${man.stage.version.major}.${man.prod.version.minor}"
+		} 
             }
     	}
 
@@ -57,14 +56,11 @@ pipeline {
 		environment name: "DEPLOY_PROD", value: "YES"
 	    } 
             steps {
-		script {
-			echo "Deploy PROD VERSION: ${manifest.prod.version.major}.${manifest.prod.version.minor}"
-		//dir("${env.WORKSPACE}/ansible"){
-                	//sh "ansible-playbook gitops-deploy-app.yml -e appname=${environment.app.name} -e repo=${manifest.repo} -e appport=${environment.app.port} -e version=${manifest.version}"
+		sh "echo 'Deploy PROD VERSION: ${man.prod.version.major}.${man.prod.version.minor}'"
+		dir("${env.WORKSPACE}/ansible"){
+                	sh "ansible-playbook gitops-deploy-app.yml -e appname=${man.prod.app.name} -e repo=${man.prod.docker_repo} -e appport=${man.prod.app.port} -e version=${man.prod.version.major}.${man.prod.version.minor}"
 		}
             }
     	}
-
-
     }
 }
