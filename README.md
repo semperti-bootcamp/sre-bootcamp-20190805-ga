@@ -88,6 +88,9 @@ b560bad26e19        gonzaloacosta/journal:4.1   "java -jar /opt/jo..."   About a
 [root@sre-bootcamp-ga-20190805 ~]# 
 ```
 
+Cuando ejecutamos por segunda vez el pipeline este debe fallar porque encuentra que las versiones que se encuentran en el manifest son las mismas que ya están desplegadas.
+Otra opción mas correcta es que no falle y que al condicional en el step falle.
+
 ## Observaciones
 
 ### Temas en los que debo profundizar.
@@ -100,3 +103,4 @@ b560bad26e19        gonzaloacosta/journal:4.1   "java -jar /opt/jo..."   About a
 # Salud FIN!
 ![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a9-gitops-prod/images/Guinness.jpg "Guinness.jpg")
 
+El que ha leido hasta acá se ganó una cerveza a cuenta mía ;)
