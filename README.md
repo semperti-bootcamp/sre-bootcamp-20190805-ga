@@ -76,20 +76,16 @@ En la imagen se puede ver que un solo branch hace dos deploy y el condicional pa
 	1. En Staging la version a desplegar sea distinta a la que está desplegada.
 	2. En Production la version a desplegar debe ser si o si menor o igual a staging.
  
-![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a9-gitops-final/images/gitops-final1.png "gitops-final1.png")
-
-![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a9-gitops-final/images/gitops-final2.png "gitops-final2.png")
+![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a9-gitops-final/images/gitops-final3.png "gitops-final3.png")
 
 ```
-[root@sre-bootcamp-ga-20190805 ~]# docker ps -a
-CONTAINER ID        IMAGE                       COMMAND                  CREATED              STATUS              PORTS                    NAMES
-b560bad26e19        gonzaloacosta/journal:4.1   "java -jar /opt/jo..."   About a minute ago   Up About a minute   0.0.0.0:8080->8080/tcp   journal_latest
-0f205678f450        gonzaloacosta/journal:4.2   "java -jar /opt/jo..."   About a minute ago   Up About a minute   0.0.0.0:8081->8080/tcp   journal_staging
-[root@sre-bootcamp-ga-20190805 ~]# 
-```
+[devops@sre-bootcamp-ga-20190805 ~]$ sudo docker ps -a
+CONTAINER ID        IMAGE                       COMMAND                  CREATED             STATUS              PORTS                    NAMES
+6bc5279ead7f        gonzaloacosta/journal:4.2   "java -jar /opt/jo..."   13 seconds ago      Up 10 seconds       0.0.0.0:8080->8080/tcp   journal_latest
+f7d9e2ff3196        gonzaloacosta/journal:4.3   "java -jar /opt/jo..."   23 seconds ago      Up 21 seconds       0.0.0.0:8081->8080/tcp   journal_staging
+[devops@sre-bootcamp-ga-20190805 ~]$ 
 
-Cuando ejecutamos por segunda vez el pipeline este debe fallar porque encuentra que las versiones que se encuentran en el manifest son las mismas que ya están desplegadas.
-Otra opción mas correcta es que no falle y que al condicional en el step falle.
+```
 
 ## Observaciones
 
