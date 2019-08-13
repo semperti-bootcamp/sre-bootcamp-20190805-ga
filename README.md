@@ -1,34 +1,56 @@
-# Week 01 - Assignments
-Repositorio para los assignments de la primer semana.
+# Week 01 - Assignments 2
+Configurar VM con Ansible
 
-# Java Application
+##  Detalle
 
-## Prerequisites
+	2.0 Deben configurarse todos los elementos solicitados [Java 8, Maven, MySQL, etc.]
+	2.1 Deben proveerse screenshots validando los paquetes instalados
+	2.2 Deben proveerse los scripts de configuración
+	2.3 Deben describirse todos los pasos y requerimientos para ejecutar el script de Ansible
 
-	1. Java 8
-	2. Maven 3.3+
-	3. MySQL 5.6+
-	4. Internet connection
+## Pasos
+
+### 1. Configurar ansible
+
+	1. Instalar ansible core en notebook
+	2. Creo usuario sin privilegios de conexion
+		- User: devops
+		- Pass: la empresa
+	3. Copiar ssh-key con ssh-copy-id  devops@sre-bootcamp-ga-20190805 (agregado en /etc/hosts)
+	4. Configurar ansible.cfg e inventory. 
+	5. Test con ansible app -m ping
+
+```
+$ ansible app -m ping
+sre-bootcamp-ga-20190805 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+```
 	
-	
-## Instrucciones para correr esta aplicación
+### 2. Instalacion de los pre requsitos
 
-	1. Configurar la conexión de la base de datos desde Code/src/main/resources/application.properties
-	2. Ubicate en la carpeta del código y ejecutá "mvn spring-boot:run".
-	3. Revisá la siguiente dirección http://localhost:8080
-	4. [Opcional] Por defecto, la aplicación almacena los PDFs en el directorio <User_home>/upload. Si querés cambiar este directorio, podés utilizar la propiedad -Dupload-dir=<path>.
-	5. [Opcional] Los PDFs predefinidos pueden encontrarse en la carpeta PDF. Si querés ver los PDFs, tenés que copiar los contenidos de esta carpeta a lo definido en el paso anterior.
-	
-## Datos de autenticación
+Se crearon tres roles por cada componente a instalar. Cada rol tiene variables por default
+que son seteadas en el archivo ./ansible/role/{{ nombre_rol }}/defaults/main.yml
 
-	El sistema viene con 4 cuentas pre-definidas:
-		1. publishers:
-			- username: publisher1 / password: publisher1
-			- username: publisher2 / password: publisher2
-		2. public users:
-			- username: user1 / password: user1
-			- username: user2 / password: user2
-            
-# Contact
+	- role: install_java -> 1.8.0
+	- role: install_maven -> 3.6.1
+	- role: install_mysql -> 5.6
 
-Cualquier duda o consulta, ubicanos en [Slack](https://semperti.slack.com).
+### 3. Pasos para ejecutar el playbook.
+
+```
+cd ./ansible/
+ansible-playbook install_app_pre_req.yml
+```
+### 4. Output playbook
+![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a2-ansible/images/ansible-roles.png "ansible-roles")
+
+### 5. Check playbook 
+![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a2-ansible/images/ansible-check.png "ansible-check")
+
+### 6. Check conexion desde vpn
+![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a2-ansible/images/ansible-vpn-check.png "ansible-vpn-check")
