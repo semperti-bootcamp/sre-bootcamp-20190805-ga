@@ -18,7 +18,7 @@ pipeline {
 		script {
 		   man = readJSON file: 'manifest.json'
 		   echo "STAGE1 - Tasks pre Test and build"
-		   echo "Version: ${env.stg.ver.maj}.${env.stg.ver.min}"
+		   echo "Version: ${man.stg.ver.maj}.${man.stg.ver.min}"
 		   sudo yum -y install wget nc ansible
    		}
             }
@@ -35,7 +35,7 @@ pipeline {
 	// STAGE3 - Release and Upload to Nexus
        	stage('Release & Upload Nexus') {
             steps {
-                sh "mvn versions:set -DnewVersion=${env.stg.ver.maj}.${env.stg.ver.min} -f Code/pom.xml"
+                sh "mvn versions:set -DnewVersion=${man.stg.ver.maj}.${man.stg.ver.min} -f Code/pom.xml"
                 sh "mvn clean deploy -f Code/pom.xml -DskipTests" 
             }
        	}
@@ -43,7 +43,7 @@ pipeline {
 	// STAGE4 - Snapshot and Upload to Nexus
        	stage('Snapshot & Upload Nexus') {
             steps {
-                sh "mvn versions:set -DnewVersion=${env.stg.ver.maj}.${env.stg.ver.min}-SNAPSHOT -f Code/pom.xml"
+                sh "mvn versions:set -DnewVersion=${man.stg.ver.maj}.${man.stg.ver.min}-SNAPSHOT -f Code/pom.xml"
                 sh "mvn clean deploy -f Code/pom.xml -DskipTests" 
             }
        	}
@@ -53,7 +53,7 @@ pipeline {
             steps {
 	       withCredentials([usernamePassword(credentialsId: 'ga-docker-hub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {	
 		  dir("${env.WORKSPACE}/ansible"){
-		    	sh "ansible-playbook stage5-docker-build.yml --extra-vars @vars/ansible-vars.json -e VERSION=${env.stg.ver.maj}.${env.stg.ver.min} -e USERNAME=$USERNAME -e PASSWORD=$PASSWORD"
+		    	sh "ansible-playbook stage5-docker-build.yml --extra-vars @vars/ansible-vars.json -e VERSION=${man.stg.ver.maj}.${man.stg.ver.min} -e USERNAME=$USERNAME -e PASSWORD=$PASSWORD"
 		  }
 	       } 
             }
