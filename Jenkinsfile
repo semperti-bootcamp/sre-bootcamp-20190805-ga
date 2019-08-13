@@ -95,7 +95,7 @@ pipeline {
             steps {
 		sh "echo 'Deploy Stage Version: ${man.stg.ver.maj}.${man.stg.ver.min}'"
 		dir("${env.WORKSPACE}/ansible"){
-                	sh "ansible-playbook gitops-deploy-app.yml -e appname=${man.stage.app.name} -e repo=${man.stage.docker_repo} -e appport=${man.stage.app.port} -e version=${man.stg.ver.maj}.${man.stg.ver.min}"
+                	sh "ansible-playbook gitops-deploy-app.yml -e appname=${man.stg.app.name} -e repo=${man.stg.docker_repo} -e appport=${man.stg.app.port} -e version=${man.stg.ver.maj}.${man.stg.ver.min}"
 		} 
             }
     	}
