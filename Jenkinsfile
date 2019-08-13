@@ -15,7 +15,7 @@ pipeline {
         stage('Determine Version') {
             steps {
 		script {
-            	   man = readJSON file: 'man.json'
+            	   man = readJSON file: 'manifest.json'
 		   // Stage versions
 		   env.DEPLOY_STAGE_VERSION = sh(returnStdout: true, script: "sudo docker ps -a | grep journal_staging | awk '{ print \$2 }' | cut -d: -f2").trim()
 		   env.DEPLOY_STAGE_VERSION_MAJOR = sh(returnStdout: true, script: "echo '${env.DEPLOY_STAGE_VERSION}' | awk -F'[ .]' '{print \$1}'").trim()
