@@ -53,7 +53,7 @@ pipeline {
         }
         stage('Deploy to Staging') {
 	    when { 
-		branch "w1a9-gitops-final"
+		//branch "w1a9-gitops-final"
 		environment name: "DEPLOY_STAGE", value: "YES"
 	    } 
             steps {
