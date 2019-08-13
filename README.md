@@ -1,78 +1,36 @@
-# Week 01 - Assignments 6
+# Week 01 - Assigments 8 
 
-Subir imagen a Nexus o Docker Hub
+Crear Pipeline de CD
 
-	1. La imagen de Docker debe quedar accesible desde Nexus
-	2. Se debe proveer el comando para subir una imagen a Nexus junto con un comando para descargar la imagen y correr el contenedor
-	3. Debe proveerse el sistema lógico de taggeo de imágenes
+	8.0	Debe encontrarse dentro de un folder con el nombre bc-username
+	8.1	Debe ejecutarse el build cada vez que se realice un PR
+	8.2	Debe contener al menos las etapas de descarga de imagen, ejecución de contenedor y prueba de acceso a la aplicación mediante un curl y su output
 
-## Paso 1. Subir imagen a Nexus 
+## Pasos
 
-Tenemos problemas con la autenticacion sobre Nexus, las pruebas que hice para verificarlo son las siguientes.
-
-### 1. Nexus
-
-Cuando intento hacer le login con las credenciales falla, tanto con http/https.
+Para promover una nueva version debemos modificar la versión desde el Jenkisfiles en el apartado environment.
 
 ```
-[root@sre-bootcamp-ga-20190805 week01]# docker login -u Bootcamp -p Bootcamp1! 10.252.7.162:8081
-Error response from daemon: Get https://10.252.7.162:8081/v1/users/: http: server gave HTTP response to HTTPS client
-[root@sre-bootcamp-ga-20190805 week01]#
+    environment {
+        ANSIBLE_HOST_KEY_CHECKING = 'false'
+        VERSION = "4.0.10"
+    }
 ```
 
-Encontre esta nota donde dice que recreando un repo podemos tener algo de suerte, no lo recree pero si cree otro.
+![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a8-jenkins-cd/images/jenkins-cd1.png "jenkins-cd1.png")
 
-	https://stackoverflow.com/questions/53009082/push-docker-image-to-nexus-3
+La imagen del container creada con el pipeline para la version 4.0.3.
 
-Luego encontre esta nota, donde habla de los dos puertos que utiliza para el proxy (ir a buscar afuera) y el privado (nuestro interno)
+![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a8-jenkins-cd/images/jenkins-cd2.png "jenkins-cd2.png")
 
-En la configuracion de nuestro repo en nexus veo que esta habilitado para el proxy el 8082 y repo 8081.
-
-	Nota: 
-	https://blog.sonatype.com/using-nexus-3-as-your-repository-part-3-docker-images
-
-	Nuestro repo
-	http://10.252.7.162:8081/repository/docker_repo/
+Chequeamos que quede corriendo, en el log de jenkins esta el curl.
 
 ```
-Important to notice: the Docker repo requires 2 different ports. We are going to use 8082 for pull from the proxy repo and 8083 for pull and push to the private repo.
+[devops@sre-bootcamp-ga-20190805 ansible]$ sudo docker images | grep 4.0.10
+gonzaloacosta/journal   4.0.10              c9860d2486b4        About a minute ago   156 MB
+journal                 4.0.10              c9860d2486b4        About a minute ago   156 MB
+[devops@sre-bootcamp-ga-20190805 ansible]$ sudo docker ps -a
+CONTAINER ID        IMAGE                          COMMAND                  CREATED              STATUS              PORTS                    NAMES
+afc9d9ff0fae        gonzaloacosta/journal:latest   "java -jar /opt/jo..."   About a minute ago   Up About a minute   0.0.0.0:8080->8080/tcp   journal_latest
+[devops@sre-bootcamp-ga-20190805 ansible]$
 ```
-
-En el servidor de nexus veo que el container docker donde corre nexus solo expone un puerto el 8081.
-
-```
-[root@jenkinsmaster ~]# docker ps -a
-CONTAINER ID        IMAGE                       COMMAND                  CREATED             STATUS                   PORTS                    NAMES
-180412733a7c        docker.io/sonatype/nexus3   "sh -c ${SONATYPE_DIR"   8 weeks ago         Up 5 weeks               0.0.0.0:8081->8081/tcp   reverent_brattain
-8fcbf4d555db        docker.io/sonatype/nexus3   "sh -c ${SONATYPE_DIR"   8 weeks ago         Exited (0) 8 weeks ago                            angry_babbage
-71543d6a143e        sonatype/nexus3             "sh -c ${SONATYPE_DIR"   8 weeks ago         Exited (1) 5 weeks ago   0.0.0.0:8081->8081/tcp   nexus
-[root@jenkinsmaster ~]#
-```
-
-Tendriamos que probar :
-	
-	1. Cambiar el network namespace a --net=host para el container de nexus (netns sobre le final).
-	1. Exponer los dos puertos sin cambiar el netns
-	2. Re-crear el repo solo para docker como dice la nota en caso de que 1. no funcione
-
-## 2. Docker Hub
-
-Tagueo, publico y descargo imagenes a un repo. Dejo todos los pasos.
-
-```
-docker login docker.io
-docker tag journal:3.3-SNAPSHOT gonzaloacosta/journal:3.3-SNAPSHOT
-docker push gonzaloacosta/journal:3.3-SNAPSHOT
-docker rmi gonzaloacosta/journal:3.3-SNAPSHOT --force
-docker pull gonzaloacosta/journal:3.3-SNAPSHOT
-docker run --rm -d -p 8080:8080 docker.io/gonzaloacosta/journal:3.3-SNAPSHOT
-docker ps -a
-```
-
-![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a6-docker-images/images/java-docker-push-rmi-pull.png "java-docker-push-rmi-pull.png")
-
-## 3. Detalle de los netns para los contenedores docker
-
-![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a6-docker-images/images/netns1.png "netns1.png")
-
-![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a6-docker-images/images/netns2.png "netns2.png")
