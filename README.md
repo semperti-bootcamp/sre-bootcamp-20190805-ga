@@ -1,87 +1,88 @@
-# Week 01 - Assignments 3
+# Week 01 - Assignments 4
 Correr aplicacion Java
 
-	1. Configurar la conexión de la base de datos desde Code/src/main/resources/application.properties
-	2. Ubicate en la carpeta del código y ejecutá "mvn spring-boot:run".
-	3. Revisá la siguiente dirección http://localhost:8080
-	4. [Opcional] Por defecto, la aplicación almacena los PDFs en el directorio <User_home>/upload. Si querés cambiar este directorio, podés utilizar la propiedad -Dupload-dir=<path>.
-	5. [Opcional] Los PDFs predefinidos pueden encontrarse en la carpeta PDF. Si querés ver los PDFs, tenés que copiar los contenidos de esta carpeta a lo definido en el paso anterior.
+	1. Se debe cargar en Nexus un snapshot de la aplicación Java 
+	2. Se debe cargar en Nexus un release de la aplicación Java 
+	3. Se deben realizar mediante un script de Ansible 
+	4. Se debe proveer todos los archivos necesarios para realizar estas tareas 
 
 ## Pasos
 
-### 1. Conectarse a CentOS 
-
- Ip: 10.252.7.178
+### 1. Preparo pom.xml configurando los repo de Nexus
+ 
+Edito pom.xml y agregar "repository" y "snapshotReposity"
+```
+...
+  <distributionManagement>  
+      <repository>  
+          <id>nexus-releases</id>  
+          <name>Nexus Release Repository</name>  
+          <url>http://10.252.7.162:8081/repository/maven-releases/</url>  
+      </repository>  
+      <snapshotRepository>  
+          <id>nexus-snapshots</id>  
+          <name>Nexus Snapshot Repository</name>  
+         <url>http://10.252.7.162:8081/repository/maven-snapshots/</url>
+      </snapshotRepository>  
+  </distributionManagement> 
+```		
+agrego dependecia
 
 ```
-ssh root@10.252.7.178
+  <dependency>
+	  <groupId>org.apache.maven.plugins</groupId>
+	  <artifactId>maven-release-plugin</artifactId>
+	  <version>2.5.3</version>
+	  <type>maven-plugin</type>
+  </dependency>
+```
+agrego configuracion de las credenciales en setting.xml de maven para nexus 
+reemplazar USERNEXUS y PASSWORDNEXUS
+```
+   <server>
+        <id>nexus-snapshots</id>
+        <username>USERNEXUS</username>
+        <password>PASSWORDNEXUS</password>
+    </server>
+    <server>
+        <id>nexus-releases</id>
+        <username>USERNEXUS</username>
+        <password>PASSWORDNEXUS</password>
+    </server>
 ```
 
-### 2. Clono repo, testeo y creo .jar 
+
+### 2. Creo snapshot de java y publico a Nexus tomo como ejemplo version 3.1
 
 ```
-git clone https://github.com/semperti-bootcamp/week01
-sed -i -e 's/spring.datasource.password=/&semperti/g' application.properties
-cd Code
-mvn spring-boot:run
-mvn clean package
+mvn versions:set -DnewVersion=3.1-SNAPSHOT
+mvn clean deploy
+ls ./target/journals-3.1-SNAPSHOT.jar
+journals-3.1-SNAPSHOT.jar
+grep SNAPSHOT pom.xml
+    <version>3.1-SNAPSHOT</version> 
+```
+### 3. Creo nuevo release de java y publico a Nexus Ej, version 3.2
+```
+mvn versions:set -DnewVersion=3.2
+mvn clean deploy
+ls ./target/journals-3.2.jar
+journals-3.2.jar
+mvn versions:set -DnewVersion=3.2
+mvn clean deploy
 ```
 
-![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a3-java/images/java-test.png "java-test")
+### 4. Hago nuevo deploy con script de ansible veriones 3.3 y 3.3 SNAPSHOT
 
-### 4. Java Run Web
-
-Correr los siguientes comandos.
-
+Para nuevo release 3.3
 ```
-mkdir ~/upload
-cp -pvr /root/week1/PDFs/* /root/upload/
-java -jar target/journal-1.0.jar
-firewall-cmd --zone=public --add-port=8080/tcp --permanent
-firewall-cmd --reload
-curl http://localhost:8080
-```
-Pruebo desde mi notebook
-
-```
-$ curl http://10.252.7.178:8080
-<!DOCTYPE html>
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <title>Semperti - Journal System</title>
-    <script src="js/angular-min.js"></script>
-    <script src="js/app.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
-</head>
-<body ng-app="JournalApp" ng-controller="CategoryController">
-<h2>Bienvenido al sistema de jornales de Semperti</h2>
-
-
-
-
-<div ng-controller="getCategories">
-    <table>
-        <thead>
-        <td>Categoría</td>
-        <td>Subscribirse</td>
-        </thead>
-        <tbody>
-
-        <tr ng-repeat="category in categories">
-            <td>{{category.name}}</td>
-            <td>
-                <a href="/login">Login</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-</body>
-</html>
+ansible-playbook maven-deploy.yml -e "new_version=3.3"
 ```
 
-![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a3-java/images/java-run-web.png "java-web")
+Para nuevo SNAPSHOT 3.3 
+```
+ansible-playbook maven-deploy.yml -e "new_version=3.3 snapshot=True"
+```
 
-![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a3-java/images/java-run-web-pdf.png "java-web-pdf")
+![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a4-nexus/images/java-deploy-nexus-ansible.png "java-deploy-nexus-ansible")
 
