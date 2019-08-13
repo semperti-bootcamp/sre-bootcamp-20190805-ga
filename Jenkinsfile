@@ -65,7 +65,7 @@ pipeline {
     	}
         stage('Deploy to Production') {
 	    when { 
-		expression { env.DEPLOY_PROD_VERSION_MAJOR == 'greeting' }	
+		environment name: "DEPLOY_PROD", value: "YES"
 	    } 
             steps {
 		script {
