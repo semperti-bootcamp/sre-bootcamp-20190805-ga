@@ -27,30 +27,16 @@ pipeline {
 		   env.DEPLOY_PROD_VERSION_MINOR = sh(returnStdout: true, script: "echo '${env.DEPLOY_PROD_VERSION}' | awk -F'[ .]' '{print \$2}'").trim()
 
 		   // Print Versions 
-		   echo "DEPLOY_STAGE_VERSION:         ${env.DEPLOY_STAGE_VERSION}"
-		   echo "DEPLOY_STAGE_VERSION_MAJOR:   ${env.DEPLOY_STAGE_VERSION_MAJOR}"
-		   echo "DEPLOY_STAGE_VERSION_MINOR:   ${env.DEPLOY_STAGE_VERSION_MINOR}"
-		   echo "MANIFEST_STAGE_VERSION_MAJOR: ${manifest.stage.version.major}"
-		   echo "MANIFEST_STAGE_VERSION_MINOR: ${manifest.stage.version.minor}"
+		   echo "Stage deployed: ${env.DEPLOY_STAGE_VERSION} --> Stage to deploy: ${manifest.stage.version.major}.${manifest.stage.version.minor}"
+		   echo "Prod deployed: ${env.DEPLOY_PROD_VERSION} --> Prod to deploy: ${manifest.prod.version.major}.${manifest.prod.version.minor}"
 
-		   echo "DEPLOY_PROD_VERSION:          ${env.DEPLOY_PROD_VERSION}"
-		   echo "DEPLOY_PROD_VERSION_MAJOR:    ${env.DEPLOY_PROD_VERSION_MAJOR}"
-		   echo "DEPLOY_PROD_VERSION_MINOR:    ${env.DEPLOY_PROD_VERSION_MINOR}"
-		   echo "MANIFEST_PROD_VERSION_MAJOR:  ${manifest.prod.version.major}"
-		   echo "MANIFEST_PROD_VERSION_MINOR:  ${manifest.prod.version.minor}"
-
-		   // Deploy STAGE if version is different to version deployed.
+		   // Deploy stage if stage version deployed NOT EQUAL stage version in manifest.json
 		   env.DEPLOY_STAGE = sh(returnStdout: true, script: "[ '${env.DEPLOY_STAGE_VERSION_MINOR}' -ne '${manifest.stage.version.minor}' ] && echo 'YES'").trim()
+		
+		   // Deploy prod if stage version deployed LESS THAN OR EQUAL stage in manifest.json
 		   env.DEPLOY_PROD = sh(returnStdout: true, script: "[ '${manifest.prod.version.minor}' -le '${manifest.stage.version.minor}' ] && echo 'YES'").trim()
-		   //env.DEPLOY_PROD = "YES"
-
-		   // Deploy PROD if version es different to version deployed and minor the STAGE to deploy.
-		   //env.DEPLOY_PROD = sh(returnStdout: true, script: "[ '${env.DEPLOY_PROD_VERSION.MINOR}' -le '${manifest.stage.version.minor}' ] && echo 'YES'").trim() 
 
 		}  
-		//dir("${env.WORKSPACE}/ansible"){
-                	//sh "ansible-playbook gitops-deploy-app.yml -e appname=${environment.app.name} -e repo=${manifest.repo} -e appport=${environment.app.port} -e version=${manifest.version}"
-		//}
             }
         }
         stage('Deploy to Staging') {
@@ -72,7 +58,7 @@ pipeline {
 	    } 
             steps {
 		script {
-			echo "Deploy PROD VERSION: ${manifest.prod.version.major}.${manifest.stage.version.minor}"
+			echo "Deploy PROD VERSION: ${manifest.prod.version.major}.${manifest.prod.version.minor}"
 		//dir("${env.WORKSPACE}/ansible"){
                 	//sh "ansible-playbook gitops-deploy-app.yml -e appname=${environment.app.name} -e repo=${manifest.repo} -e appport=${environment.app.port} -e version=${manifest.version}"
 		}
