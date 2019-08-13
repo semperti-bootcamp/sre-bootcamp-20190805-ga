@@ -9,7 +9,7 @@ pipeline {
     }
     environment {
         ANSIBLE_HOST_KEY_CHECKING = 'false'
-	VERSION = "4.1"
+	VERSION = "4.2"
     }
 
     stages {
