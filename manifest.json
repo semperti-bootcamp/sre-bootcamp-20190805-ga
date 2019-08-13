@@ -1,0 +1,48 @@
+{
+  "stg": {
+    "ver": {
+      "maj": 4,
+      "min": 3
+    },
+    "docker_repo": "gonzaloacosta/journal",
+    "app_name": "journals",
+    "app": {
+      "ip": "10.252.7.178",
+      "port": "8081",
+      "healthcheck_url": "http://10.252.7.178:8081",
+      "name": "journal_staging",
+      "artifacts": [
+        {
+          "app": "journals-4.3.jar"
+        }
+      ]
+    },
+    "db": {
+      "ip": "10.252.7.178",
+      "port": "3306"
+    }
+  },
+  "prod": {
+    "ver": {
+      "maj": 4,
+      "min": 2
+    },
+    "docker_repo": "gonzaloacosta/journal",
+    "app_name": "journals",
+    "app": {
+      "ip": "10.252.7.178",
+      "port": "8080",
+      "healthcheck_url": "http://10.252.7.178:8080",
+      "name": "journal_latest",
+      "artifacts": [
+        {
+          "app": "journals-4.2.jar"
+        }
+      ]
+    },
+    "db": {
+      "ip": "10.252.7.178",
+      "port": "3306"
+    }
+  }
+}
