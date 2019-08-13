@@ -1,0 +1,266 @@
+$ terraform apply
+var.ovirt_pass
+  The plain password of user to access oVirt engine API
+
+  Enter a value: Semperti082019
+
+var.ovirt_username
+  The name of user to access oVirt engine API
+
+  Enter a value: gonzalo.acosta@semperti.local
+
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # ovirt_vm.my_vm_1 will be created
+  + resource "ovirt_vm" "my_vm_1" {
+      + clone             = false
+      + cluster_id        = "Default"
+      + cores             = 1
+      + high_availability = false
+      + id                = (known after apply)
+      + memory            = 2048
+      + name              = "sre-bootcamp-ga-app"
+      + sockets           = 2
+      + status            = (known after apply)
+      + template_id       = "CentOS7-Template"
+      + threads           = 1
+
+      + initialization {
+          + authorized_ssh_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDC/JB85IiXqgSHk/Y4fn+nbQzyHITAoZXSjyzBsFj5mdwBDYe+IHpvaLT/71w9rML016lugGK6hlnxlpYUBQgove1w5LGcpuqoYapVOd7bEvnpureDlSeILVxda5fCS41N0o2dl+RbqtINs6tS4IVQWVi1PoiayV2Nx+2JZ6v4OhlogUS+SeWJUM5wOlrc+pOevlWUiVVj57q2jM4th1gyRxw4TLYtJOxqQqhu1aGE90RmWqjvJQbw4Juu9tsA5f9w7oS4c/wAtdB38jWJ3AQ2R6n9kwl9FHdgc+Jo5EUo4OuEgWidLaNzgGmkA/ussyQWTjve8BYv3WALjXRa3NO1 gonzaloacosta@Gonzalos-MacBook-Pro.local\n"
+
+          + nic_configuration {
+              + boot_proto = "dhcp"
+              + label      = "eth0"
+              + on_boot    = true
+            }
+        }
+    }
+
+  # ovirt_vnic.nic1 will be created
+  + resource "ovirt_vnic" "nic1" {
+      + id              = (known after apply)
+      + name            = "nic1"
+      + vm_id           = (known after apply)
+      + vnic_profile_id = (known after apply)
+    }
+
+  # ovirt_vnic_profile.vm_vnic_profile will be created
+  + resource "ovirt_vnic_profile" "vm_vnic_profile" {
+      + id             = (known after apply)
+      + migratable     = true
+      + name           = "vm_vnic_profile"
+      + network_id     = "rhevm"
+      + port_mirroring = true
+    }
+
+Plan: 3 to add, 0 to change, 0 to destroy.
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: yes
+
+ovirt_vnic_profile.vm_vnic_profile: Creating...
+ovirt_vm.my_vm_1: Creating...
+
+Error: Failed to parse non-array sso with response
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+
+
+<link id="id-link-favicon" rel="shortcut icon" href="/ovirt-engine/theme-resource/favicon" type="image/x-icon" />
+
+    <title>404 - Page not found</title>
+
+
+
+
+
+
+
+                <link rel="stylesheet" type="text/css" href="/ovirt-engine/theme/00-ovirt.brand/welcome_style.css">
+
+                <link rel="stylesheet" type="text/css" href="/ovirt-engine/theme/00-ovirt.brand/common.css">
+
+                <link rel="stylesheet" type="text/css" href="/ovirt-engine/theme/00-ovirt.brand/gwt_common.css">
+
+                <link rel="stylesheet" type="text/css" href="/ovirt-engine/theme/00-ovirt.brand/patternfly/css/styles.min.css">
+
+                <link rel="stylesheet" type="text/css" href="/ovirt-engine/theme/00-ovirt.brand/patternfly-ovirt.css">
+
+                <link rel="stylesheet" type="text/css" href="/ovirt-engine/theme/00-ovirt.brand/ovirt-patternfly-compat.css">
+
+
+
+
+
+                <link rel="stylesheet" type="text/css" href="/ovirt-engine/theme/50-rhev-2.brand/welcome_style.css">
+
+                <link rel="stylesheet" type="text/css" href="/ovirt-engine/theme/50-rhev-2.brand/common.css">
+
+                <link rel="stylesheet" type="text/css" href="/ovirt-engine/theme/50-rhev-2.brand/rcue-rhev.css">
+
+                <link rel="stylesheet" type="text/css" href="/ovirt-engine/theme/50-rhev-2.brand/rhev-rcue-compat.css">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+<div class="obrand_loginPageBackground">
+        <a href="http://www.redhat.com" class="obrand_loginPageLogoImageLink">
+             <span class="obrand_loginPageLogoImage"></span>
+        </a>
+        <div class="login-pf">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-sm-12">
+                        <div id="brand">
+                            <div class="obrand_loginFormLogoImage"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 welcome-title-wrapper">
+                        <span class="welcome-title">404 - Page not found</span>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <a id="link-404" href="/ovirt-engine/">Click here to continue.</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+  on main.tf line 7, in resource "ovirt_vm" "my_vm_1":
+   7: resource "ovirt_vm" "my_vm_1" {
+
+
+
+Error: Failed to parse non-array sso with response
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+
+
+<link id="id-link-favicon" rel="shortcut icon" href="/ovirt-engine/theme-resource/favicon" type="image/x-icon" />
+
+    <title>404 - Page not found</title>
+
+
+
+
+
+
+
+                <link rel="stylesheet" type="text/css" href="/ovirt-engine/theme/00-ovirt.brand/welcome_style.css">
+
+                <link rel="stylesheet" type="text/css" href="/ovirt-engine/theme/00-ovirt.brand/common.css">
+
+                <link rel="stylesheet" type="text/css" href="/ovirt-engine/theme/00-ovirt.brand/gwt_common.css">
+
+                <link rel="stylesheet" type="text/css" href="/ovirt-engine/theme/00-ovirt.brand/patternfly/css/styles.min.css">
+
+                <link rel="stylesheet" type="text/css" href="/ovirt-engine/theme/00-ovirt.brand/patternfly-ovirt.css">
+
+                <link rel="stylesheet" type="text/css" href="/ovirt-engine/theme/00-ovirt.brand/ovirt-patternfly-compat.css">
+
+
+
+
+
+                <link rel="stylesheet" type="text/css" href="/ovirt-engine/theme/50-rhev-2.brand/welcome_style.css">
+
+                <link rel="stylesheet" type="text/css" href="/ovirt-engine/theme/50-rhev-2.brand/common.css">
+
+                <link rel="stylesheet" type="text/css" href="/ovirt-engine/theme/50-rhev-2.brand/rcue-rhev.css">
+
+                <link rel="stylesheet" type="text/css" href="/ovirt-engine/theme/50-rhev-2.brand/rhev-rcue-compat.css">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+<div class="obrand_loginPageBackground">
+        <a href="http://www.redhat.com" class="obrand_loginPageLogoImageLink">
+             <span class="obrand_loginPageLogoImage"></span>
+        </a>
+        <div class="login-pf">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-sm-12">
+                        <div id="brand">
+                            <div class="obrand_loginFormLogoImage"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 welcome-title-wrapper">
+                        <span class="welcome-title">404 - Page not found</span>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <a id="link-404" href="/ovirt-engine/">Click here to continue.</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+  on main.tf line 33, in resource "ovirt_vnic_profile" "vm_vnic_profile":
+  33: resource "ovirt_vnic_profile" "vm_vnic_profile" {
+
+
+:( Mon Aug 05 04:08:54 gonzaloacosta@Gonzalos-MacBook-Pro [~/sre-bootcamp-ga-20190805]
+$
