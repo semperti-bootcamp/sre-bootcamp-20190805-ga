@@ -5,17 +5,64 @@ def man
 pipeline {
 
     agent {
-        node (){
+        node () {
             label 'sre-bootcamp-ga-1'
         }
     }
 
     stages {
 
+	// STAGE1 - Slave Configure & Clean
+       	stage('Configure & Clean Slave') {
+           steps {
+		script {
+		   man = readJSON file: 'manifest.json'
+		   echo "STAGE1 - Tasks pre Test and build"
+		   echo -n "Version : " ; echo "${env.stg.ver.maj}.${env.stg.ver.min}"
+		   sudo yum -y install wget nc ansible
+   		}
+            }
+       	}
+
+
+	// STAGE2 - Unit Test
+       	stage('Unit Test') {
+            steps {
+                sh "mvn test -f Code/pom.xml"
+            }
+       	} 
+
+	// STAGE3 - Release and Upload to Nexus
+       	stage('Release & Upload Nexus') {
+            steps {
+                sh "mvn versions:set -DnewVersion=${env.stg.ver.maj}.${env.stg.ver.min} -f Code/pom.xml"
+                sh "mvn clean deploy -f Code/pom.xml -DskipTests" 
+            }
+       	}
+
+	// STAGE4 - Snapshot and Upload to Nexus
+       	stage('Snapshot & Upload Nexus') {
+            steps {
+                sh "mvn versions:set -DnewVersion=${env.stg.ver.maj}.${env.stg.ver.min}-SNAPSHOT -f Code/pom.xml"
+                sh "mvn clean deploy -f Code/pom.xml -DskipTests" 
+            }
+       	}
+
+	// STAGE5 - Docker build, tag and push image 
+	stage('Docker build, tag & push images ') {
+            steps {
+	       withCredentials([usernamePassword(credentialsId: 'ga-docker-hub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {	
+		  dir("${env.WORKSPACE}/ansible"){
+		    	sh "ansible-playbook stage5-docker-build.yml --extra-vars @vars/ansible-vars.json -e VERSION=${env.stg.ver.maj}.${env.stg.ver.min} -e USERNAME=$USERNAME -e PASSWORD=$PASSWORD"
+		  }
+	       } 
+            }
+	}
+
+	// STAGE6 - Version
         stage('Determine Version') {
             steps {
 		script {
-            	   man = readJSON file: 'manifest.json'
 		   // Stage versions
 		   env.run_stg_ver = sh(returnStdout: true, script: "sudo docker ps -a | grep journal_staging | awk '{ print \$2 }' | cut -d: -f2").trim()
 		   env.run_stg_ver_maj = sh(returnStdout: true, script: "echo '${env.run_stg_ver}' | awk -F'[ .]' '{print \$1}'").trim()
@@ -39,6 +86,8 @@ pipeline {
 		}  
             }
         }
+	
+	// STAGE7 - Deploy to Staging
         stage('Deploy to Staging') {
 	    when { 
 		environment name: "deploy_stg", value: "YES"
@@ -50,7 +99,8 @@ pipeline {
 		} 
             }
     	}
-
+	
+	// STAGE8 - Deploy to Prod
         stage('Deploy to Prod') {
 	    when { 
 		environment name: "deploy_prod", value: "YES"
