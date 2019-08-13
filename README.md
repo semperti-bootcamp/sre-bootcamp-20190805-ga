@@ -98,5 +98,5 @@ b560bad26e19        gonzaloacosta/journal:4.1   "java -jar /opt/jo..."   About a
 	4. GitOps. Debo reforzar conceptos de GitFlow, son nuevos y no los tengo claro por lo que el codigo en groovy es muy pobre.
 
 # Salud FIN!
-![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1ar9-gitops-final/images/Guinness.jpg "Guinness.jpg")
+![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a9-gitops-prod/images/Guinness.jpg "Guinness.jpg")
 
