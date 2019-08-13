@@ -41,6 +41,7 @@ pipeline {
 
 		   // Deploy STAGE if version is different to version deployed.
 		   env.DEPLOY_STAGE = sh(returnStdout: true, script: "[ '${env.DEPLOY_STAGE_VERSION_MINOR}' -ne '${manifest.stage.version.minor}' ] && echo 'YES'").trim()
+		   env.DEPLOY_PROD = sh(returnStdout: true, script: "[ '${manifest.prod.version.minor}' -le '${manifest.stage.version.minor}' ] && echo 'YES'").trim()
 		   //env.DEPLOY_PROD = "YES"
 
 		   // Deploy PROD if version es different to version deployed and minor the STAGE to deploy.
@@ -64,5 +65,20 @@ pipeline {
 		}
             }
     	}
+
+        stage('Deploy to Prod') {
+	    when { 
+		environment name: "DEPLOY_PROD", value: "YES"
+	    } 
+            steps {
+		script {
+			echo "Deploy PROD VERSION: ${manifest.prod.version.major}.${manifest.stage.version.minor}"
+		//dir("${env.WORKSPACE}/ansible"){
+                	//sh "ansible-playbook gitops-deploy-app.yml -e appname=${environment.app.name} -e repo=${manifest.repo} -e appport=${environment.app.port} -e version=${manifest.version}"
+		}
+            }
+    	}
+
+
     }
 }
