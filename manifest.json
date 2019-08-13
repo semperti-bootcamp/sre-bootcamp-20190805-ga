@@ -13,7 +13,7 @@
       "name": "journal_staging",
       "artifacts": [
         {
-          "app": "journals-4.1.jar"
+          "app": "journals-4.2.jar"
         }
       ]
     },
@@ -36,7 +36,7 @@
       "name": "journal_latest",
       "artifacts": [
         {
-          "app": "journals-4.0.9.jar"
+          "app": "journals-4.1.jar"
         }
       ]
     },
