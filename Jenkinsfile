@@ -19,8 +19,8 @@ pipeline {
 		   man = readJSON file: 'manifest.json'
 		   echo "STAGE1 - Tasks pre Test and build"
 		   echo "Version: ${man.stg.ver.maj}.${man.stg.ver.min}"
-		   sudo yum -y install wget nc ansible
    		}
+		   sh "sudo yum -y install wget nc ansible"
             }
        	}
 
