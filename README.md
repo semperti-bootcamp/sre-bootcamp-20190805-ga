@@ -17,10 +17,10 @@ tenemos como ejemplo un manifest de este tipo. Donde tenemos los datos de la con
 
 ```
 {
-  "stage": {
-    "version": {
-      "major": 4,
-      "minor": 2
+  "stg": {
+    "ver": {
+      "maj": 4,
+      "min": 2
     },
     "docker_repo": "gonzaloacosta/journal",
     "app_name": "journals",
@@ -41,9 +41,9 @@ tenemos como ejemplo un manifest de este tipo. Donde tenemos los datos de la con
     }
   },
   "prod": {
-    "version": {
-      "major": 4,
-      "minor": 1
+    "ver": {
+      "maj": 4,
+      "min": 1
     },
     "docker_repo": "gonzaloacosta/journal",
     "app_name": "journals",
