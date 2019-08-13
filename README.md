@@ -8,50 +8,95 @@ GitOps
 
 ## Pasos
 
-Utilizare esta rama como la rama master del Assigment 9. Los archivos son los que definen debajo.
+El trabajo fue realizado en el branch w1a9-gitops-final y deje los branch w1a9-gitops-stage y w1a9-gitops-prod para ejemplificar un modelo donde
+podamos ver el deploy utilizando el condicional when por branch. Aclaro que estos dos ultimos branch no son los pedidos en el punto por el bootcamp leader.
 
-	master -> w1a9-gitops
-		- minifest.json
-		- Jenkinsfile
+Como la premisa era utilizar un solo branch con un solo manifest en donde en un mismo manifest tengamos la configuracion de los dos ambientes, 
+tenemos como ejemplo un manifest de este tipo. Donde tenemos los datos de la conexion de los dos ambientes, tanto stage como prod.
 
-	staging -> w1a9-gitops-staging
-		- manifest.json
-		- staging-env.json
-			- App Name: journal_staging (docker image name)
-			- Port: 8081
 
-	prod -> w1a9-gitops-prod
-		- manifest.json
-		- prod-env.json
-			- App Name: journal_latest (docker image name)
-			- Port: 8080
+```
+{
+  "stage": {
+    "version": {
+      "major": 4,
+      "minor": 2
+    },
+    "docker_repo": "gonzaloacosta/journal",
+    "app_name": "journals",
+    "app": {
+      "ip": "10.252.7.178",
+      "port": "8081",
+      "healthcheck_url": "http://10.252.7.178:8081",
+      "name": "journal_staging",
+      "artifacts": [
+        {
+          "app": "journals-4.2.jar"
+        }
+      ]
+    },
+    "db": {
+      "ip": "10.252.7.178",
+      "port": "3306"
+    }
+  },
+  "prod": {
+    "version": {
+      "major": 4,
+      "minor": 1
+    },
+    "docker_repo": "gonzaloacosta/journal",
+    "app_name": "journals",
+    "app": {
+      "ip": "10.252.7.178",
+      "port": "8080",
+      "healthcheck_url": "http://10.252.7.178:8080",
+      "name": "journal_latest",
+      "artifacts": [
+        {
+          "app": "journals-4.1.jar"
+        }
+      ]
+    },
+    "db": {
+      "ip": "10.252.7.178",
+      "port": "3306"
+    }
+  }
+}
+```
 
-En la imagen se puede ver que el pipeline solamente corrio para el stage de Staging y no para Prod utilizando el manifest y los archivos de environment.
 
-![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a9-gitops-prod/images/gitops1.png "gitops1.png")
+	branch -> w1a9-gitops-fina -> manifest.json
+		- Prod: app_name: journal_prod y app expuesta en el port 8080
+		- Stage: app_name: journal_staging y app expuesta en el port 8081
 
-Como solamente contaba con un solo slave, lo que hice fué el deploy de los dos ambientes hacerlo en puertos separados pero con el mismo release de imagen de docker,
-esto es para staging escucho en el puerto 8081 y para prod en el 8080
+En la imagen se puede ver que un solo branch hace dos deploy y el condicional para que deploye es que.
 
-Programamos el poll desde este lugar cada 5 min o el intervalo que se desee.
+	1. En Staging la version a desplegar sea distinta a la que está desplegada.
+	2. En Production la version a desplegar debe ser si o si menor o igual a staging.
+ 
+![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a9-gitops-final/images/gitops-final1.png "gitops-final1.png")
 
-![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a9-gitops-prod/images/gitops2.png "gitops2.png")
+![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a9-gitops-final/images/gitops-final2.png "gitops-final2.png")
 
-![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a9-gitops-prod/images/gitops3.png "gitops3.png")
-
-![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a9-gitops-prod/images/gitops4.png "gitops4.png")
+```
+[root@sre-bootcamp-ga-20190805 ~]# docker ps -a
+CONTAINER ID        IMAGE                       COMMAND                  CREATED              STATUS              PORTS                    NAMES
+b560bad26e19        gonzaloacosta/journal:4.1   "java -jar /opt/jo..."   About a minute ago   Up About a minute   0.0.0.0:8080->8080/tcp   journal_latest
+0f205678f450        gonzaloacosta/journal:4.2   "java -jar /opt/jo..."   About a minute ago   Up About a minute   0.0.0.0:8081->8080/tcp   journal_staging
+[root@sre-bootcamp-ga-20190805 ~]# 
+```
 
 ## Observaciones
 
 ### Temas en los que debo profundizar.
 
-	1. Código!. El código no es bueno y es feo. Debo profundizar el desarrollo con leguaje de uso general como java.
+	1. Código!. El código no es bueno y es feo. Profundizar el desarrollo con leguaje de uso general como java.
 	2. Pipelines!. Reforzar el desarrollo de código en groovy.
-	3. Terraform!. Profundizar y ejercitar desarrollo de script de terraform con providers como aws, vmware, azure. 
-	4. Cerveza!. Si llegó hasta acá leyendo se ganó una pinta a cuenta mia, reclamar via mail a gonzalo.acosta@semperti.com. 
-
-	   NOTA: No comparta el punto 4 con sus companeros, el premio es solo para aquellos que hayan leído hasta el final.
+	3. Terraform!. Profundizar y ejercitar desarrollo de script de terraform con providers como aws, vmware, azure. (+1 localstack)
+	4. GitOps. Debo reforzar conceptos de GitFlow, son nuevos y no los tengo claro por lo que el codigo en groovy es muy pobre.
 
 # Salud FIN!
-![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1a9-gitops-prod/images/Guinness.jpg "Guinness.jpg")
+![alt tag](https://raw.githubusercontent.com/semperti-bootcamp/sre-bootcamp-ga-20190805/w1ar9-gitops-final/images/Guinness.jpg "Guinness.jpg")
 
