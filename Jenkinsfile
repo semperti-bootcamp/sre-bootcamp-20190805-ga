@@ -18,7 +18,7 @@ pipeline {
 		script {
 		   man = readJSON file: 'manifest.json'
 		   echo "STAGE1 - Tasks pre Test and build"
-		   echo -n "Version : " ; echo "${env.stg.ver.maj}.${env.stg.ver.min}"
+		   echo "Version: ${env.stg.ver.maj}.${env.stg.ver.min}"
 		   sudo yum -y install wget nc ansible
    		}
             }
